@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Shoppi — Online Shopping for Electronics, Keyboards, Home, Vehicles &amp; More</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff4d0a'/%3E%3Ctext x='32' y='45' font-size='38' font-weight='800' text-anchor='middle' fill='white' font-family='Arial'%3ES%3C/text%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  --orange:#ff4d0a; --orange-dark:#d63a00; --red:#e5231b; --red-dark:#b9140d;
+  --ink:#241309; --paper:#fff; --cream:#fff7ef; --line:#f1e3d4; --mut:#8a7462;
+  --price:#e8380d; --star:#ffb020; --blue:#0070ba; --navy:#003087; --pal2:#009ade;
+  --yellow:#ffc439; --green:#3f9d42;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito Sans',sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select{font:inherit;color:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--orange);color:#fff}
+svg.lucide{flex:none}
+
+/* ---------- PayPal wordmark + monogram ---------- */
+.ppword{font:italic 800 1em/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:-.03em;white-space:nowrap}
+.ppword span{color:var(--navy)}
+.ppword em{font-style:italic;color:var(--pal2)}
+.ppmono{display:inline-flex;font:italic 800 1em/1 'Helvetica Neue',Helvetica,Arial,sans-serif;letter-spacing:-.06em}
+.ppmono i{font-style:italic}
+.ppmono i:first-child{color:var(--navy)}
+.ppmono i:last-child{color:var(--pal2);margin-left:-.12em}
+
+/* ---------- ticker ---------- */
+.ticker{background:var(--ink);overflow:hidden}
+.ticker-in{display:flex;width:max-content;animation:marquee 28s linear infinite}
+.tk-set{display:flex;align-items:center;padding:8px 0;white-space:nowrap}
+.tk-set span{padding:0 28px;font-size:11.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#ffd9c4;position:relative}
+.tk-set span::after{content:"·";position:absolute;right:-6px;color:var(--orange)}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:50;background:var(--orange);transition:box-shadow .25s}
+.hdr.scrolled{box-shadow:0 8px 20px -8px rgba(120,30,0,.5)}
+.hdr-in{max-width:1200px;margin:auto;display:flex;align-items:center;gap:20px;padding:12px 20px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none}
+.logo-mark{width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;color:var(--orange);flex:none}
+.logo-mark svg{width:24px;height:24px}
+.logo-word{font-family:'Baloo 2';font-weight:800;font-size:26px;line-height:1;letter-spacing:-.02em}
+.logo-sub{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.85;margin-top:3px}
+.search{flex:1;display:flex;min-width:240px;max-width:560px;background:#fff;border-radius:999px;padding:4px 4px 4px 18px;align-items:center;gap:8px}
+.search:focus-within{outline:3px solid rgba(255,255,255,.4)}
+.search input{flex:1;border:0;outline:0;font-size:15px;min-width:0;background:none}
+.search input::placeholder{color:#c2a68f}
+.search .clr{color:#b9a08d;display:none;place-items:center;width:28px;height:28px;border-radius:999px}
+.search .clr:hover{color:var(--red)}
+.search .clr svg{width:15px;height:15px}
+.search-go{width:38px;height:38px;border-radius:999px;background:var(--orange-dark);color:#fff;display:grid;place-items:center;flex:none;transition:.15s}
+.search-go:hover{background:var(--ink)}
+.search-go svg{width:17px;height:17px}
+.hdr-acts{display:flex;gap:10px;margin-left:auto;align-items:center}
+.spin-btn{background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.6);color:#fff;border-radius:999px;padding:10px 16px;font-weight:800;display:flex;gap:8px;align-items:center;font-size:13px;transition:.15s}
+.spin-btn:hover{background:#fff;color:var(--orange)}
+.spin-btn svg{width:16px;height:16px}
+.cart-btn{position:relative;background:#fff;border-radius:999px;width:46px;height:46px;display:grid;place-items:center;color:var(--orange);transition:.15s}
+.cart-btn:hover{transform:scale(1.05)}
+.cart-btn svg{width:21px;height:21px}
+.cart-badge{position:absolute;top:-5px;right:-8px;background:var(--ink);color:#fff;font-weight:800;font-size:11px;min-width:20px;height:20px;border-radius:999px;display:none;place-items:center;padding:0 5px;border:2px solid var(--orange)}
+.cart-badge.bump{animation:bump .4s}
+@keyframes bump{50%{transform:scale(1.4)}}
+
+/* ---------- category bar ---------- */
+.cats{position:sticky;top:69px;z-index:40;background:var(--paper);border-bottom:1px solid var(--line)}
+.cats-in{max-width:1200px;margin:auto;display:flex;align-items:center;gap:14px;padding:10px 20px}
+.cats-scroll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.cats-scroll::-webkit-scrollbar{display:none}
+.cat{background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-weight:700;font-size:13px;color:#6b5545;white-space:nowrap;transition:.15s}
+.cat:hover{border-color:var(--orange);color:var(--orange-dark)}
+.cat.on{background:var(--orange);border-color:var(--orange);color:#fff}
+.cats-right{margin-left:auto;display:flex;align-items:center;gap:12px;flex:none}
+.sortwrap{position:relative;display:flex;align-items:center}
+.sortwrap svg{position:absolute;right:10px;width:14px;height:14px;color:var(--mut);pointer-events:none}
+.sortsel{appearance:none;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:7px 30px 7px 14px;font-weight:700;font-size:12.5px;color:#6b5545;outline:0;cursor:pointer}
+#cnt{font-size:11.5px;color:var(--mut);font-weight:800;white-space:nowrap}
+
+/* ---------- flash strip ---------- */
+.flash{background:var(--red);color:#fff}
+.flash-in{max-width:1200px;margin:auto;display:flex;align-items:center;gap:18px;padding:13px 20px;flex-wrap:wrap}
+.flash-label{display:flex;align-items:center;gap:9px;font-family:'Baloo 2';font-weight:800;font-size:21px}
+.flash-label svg{width:20px;height:20px}
+.flash-ends{font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.12em;opacity:.9;line-height:1.4}
+.cd{display:flex;gap:4px;align-items:center;font-family:'Baloo 2';font-weight:800;font-size:19px}
+.cd span{background:#fff;color:var(--red-dark);border-radius:8px;padding:3px 8px;min-width:42px;text-align:center;font-variant-numeric:tabular-nums}
+.cd i{font-style:normal;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.coupon-ticket{margin-left:auto;display:flex;align-items:center;gap:12px;border:1.5px dashed rgba(255,255,255,.8);border-radius:12px;padding:8px 14px 8px 18px;background:rgba(0,0,0,.14);transition:.2s;text-align:left}
+.coupon-ticket:hover{background:#fff;color:var(--red-dark)}
+.coupon-ticket:hover .desc{opacity:.75}
+.coupon-ticket .code{font-family:'Baloo 2';font-weight:800;font-size:18px;letter-spacing:.04em}
+.coupon-ticket .desc{font-size:11px;font-weight:700;opacity:.9;line-height:1.3}
+.coupon-ticket svg{width:16px;height:16px}
+
+/* ---------- trust strip ---------- */
+.trust{background:var(--paper);border-bottom:1px solid var(--line)}
+.trust-in{max-width:1200px;margin:auto;display:flex;gap:10px 30px;padding:11px 20px;flex-wrap:wrap}
+.trust-i{display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;color:#7a5c43}
+.trust-i svg{width:16px;height:16px;color:var(--orange)}
+.trust-i b{color:var(--ink)}
+
+/* ---------- product grid ---------- */
+.grid{max-width:1200px;margin:auto;padding:26px 20px 64px;display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:18px}
+.card{background:var(--paper);border-radius:16px;overflow:hidden;border:1px solid var(--line);transition:transform .22s,box-shadow .22s;cursor:pointer;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(120,53,15,.28)}
+.imgw{position:relative;aspect-ratio:1;overflow:hidden;background:linear-gradient(135deg,#f6ecdf,#efe0cd)}
+.imgw img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.card:hover .imgw img{transform:scale(1.06)}
+.badge{position:absolute;top:10px;left:10px;background:var(--red);color:#fff;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:4px 9px;border-radius:7px}
+.fav{position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:999px;background:rgba(255,255,255,.93);display:grid;place-items:center;color:#c6ad97;transition:.15s}
+.fav:hover{color:var(--red)}
+.fav.on{color:var(--red)}
+.fav.on svg{fill:var(--red)}
+.fav svg{width:15px;height:15px}
+.cbody{padding:12px 13px 13px;display:flex;flex-direction:column;gap:7px;flex:1}
+.pname{font-weight:800;font-size:14px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.stars{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.stars .st{width:13px;height:13px;fill:#e4d2bd}
+.stars .st.f{fill:var(--star)}
+.rnum{font-size:11.5px;font-weight:700;color:var(--mut);margin-left:5px}
+.prow{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.price{font-family:'Baloo 2';font-weight:800;font-size:19px;color:var(--price)}
+.was{font-size:12.5px;color:var(--mut);text-decoration:line-through}
+.off{font-size:11px;font-weight:800;color:var(--red);background:#ffe6de;border-radius:6px;padding:2px 6px}
+.shipmini{display:flex;gap:5px;align-items:center;font-size:11px;font-weight:700;color:var(--mut)}
+.shipmini svg{width:13px;height:13px;color:var(--orange)}
+.addbtn{margin-top:auto;border:1.5px solid var(--orange);color:var(--price);border-radius:10px;padding:8px;font-weight:800;font-size:13px;display:flex;gap:7px;align-items:center;justify-content:center;transition:.15s}
+.addbtn:hover{background:var(--orange);color:#fff}
+.addbtn svg{width:16px;height:16px}
+.wblurb{font-size:12.5px;font-weight:600;color:#7a5c43;line-height:1.45}
+.claim{margin:2px 0}
+.claim-t{display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.04em}
+.claim-bar{height:7px;border-radius:99px;background:#ffe1d6;margin-top:5px;overflow:hidden}
+.claim-bar i{display:block;height:100%;background:var(--red);border-radius:99px}
+.card.wide{grid-column:span 2;flex-direction:row}
+.card.wide .imgw{width:210px;aspect-ratio:auto;flex:none}
+.card.wide .cbody{padding:16px}
+.card.wide .pname{font-size:16px;min-height:auto}
+.card.wide .addbtn{align-self:flex-start;padding:9px 20px}
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--mut)}
+.empty svg{width:46px;height:46px;color:#d9c3ab;margin:0 auto 14px;display:block}
+.empty h3{font-family:'Baloo 2';color:var(--ink);font-size:21px;margin-bottom:6px}
+.empty p{font-size:13.5px;font-weight:600}
+.empty button{margin-top:18px;color:var(--price);font-weight:800;border:1.5px solid var(--orange);border-radius:999px;padding:9px 20px;transition:.15s}
+.empty button:hover{background:var(--orange);color:#fff}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:#cbb7a5}
+.foot-in{max-width:1200px;margin:auto;padding:46px 20px 26px;display:flex;gap:44px;flex-wrap:wrap}
+.foot-brand{max-width:350px}
+.foot-brand .logo-mark{width:40px;height:40px}
+.foot-brand p{font-size:13px;font-weight:600;line-height:1.65;margin-top:14px}
+.fbadges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.fbadge{display:flex;gap:7px;align-items:center;font-size:11px;font-weight:700;border:1px solid #453529;border-radius:9px;padding:7px 10px;color:#bfa78f}
+.fbadge svg{width:14px;height:14px;color:var(--orange)}
+.foot-links{display:flex;gap:44px;flex-wrap:wrap;margin-left:auto}
+.fcol h4{color:#fff;font-family:'Baloo 2';font-size:14px;margin-bottom:13px;letter-spacing:.06em;text-transform:uppercase}
+.fcol .flink{display:block;color:#cbb7a5;font-size:13px;font-weight:600;padding:4px 0;cursor:default}
+.fcol .flink.act{cursor:pointer;transition:.15s}
+.fcol .flink.act:hover{color:#fff;text-decoration:underline}
+.foot-bot{border-top:1px solid #3a2b20;padding:20px;text-align:center;font-size:11.5px;line-height:1.8;font-weight:600}
+.foot-bot b{color:#e8d5c2}
+
+/* ---------- floating buttons ---------- */
+.fab{position:fixed;right:18px;bottom:18px;z-index:55;width:56px;height:56px;border-radius:999px;background:var(--red);color:#fff;display:grid;place-items:center;box-shadow:0 12px 26px -8px rgba(180,20,10,.6);transition:transform .15s}
+.fab:hover{transform:scale(1.08)}
+.fab svg{width:24px;height:24px;animation:wob 7s ease-in-out infinite}
+@keyframes wob{0%,14%,100%{transform:rotate(0)}2%{transform:rotate(-15deg)}5%{transform:rotate(12deg)}8%{transform:rotate(-7deg)}11%{transform:rotate(4deg)}}
+.fab-dot{position:absolute;top:-2px;right:-2px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:10px;min-width:18px;height:18px;border-radius:999px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+.infobtn{position:fixed;left:18px;bottom:18px;z-index:55;width:46px;height:46px;border-radius:999px;background:var(--paper);border:2px solid var(--line);color:#8a6a4f;display:grid;place-items:center;box-shadow:0 10px 24px -10px rgba(60,25,0,.35);transition:.15s}
+.infobtn:hover{color:var(--orange-dark);border-color:var(--orange);transform:scale(1.06)}
+.infobtn svg{width:20px;height:20px}
+
+/* ---------- scrim + drawer ---------- */
+.scrim{position:fixed;inset:0;background:rgba(36,19,9,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:58}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(410px,100vw);background:var(--paper);z-index:60;transform:translateX(105%);transition:transform .34s cubic-bezier(.22,.9,.24,1);display:flex;flex-direction:column;box-shadow:-18px 0 40px -20px rgba(60,25,0,.35)}
+.drawer.on{transform:none}
+.dhead{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.dhead h3{font-family:'Baloo 2';font-size:20px}
+.xbtn{margin-left:auto;width:34px;height:34px;border-radius:999px;display:grid;place-items:center;color:var(--mut);transition:.15s}
+.xbtn:hover{background:var(--cream);color:var(--ink)}
+.xbtn svg{width:17px;height:17px}
+.shipbar{padding:14px 18px;background:var(--cream);border-bottom:1px solid var(--line)}
+.shipbar-t{font-size:12.5px;font-weight:700;margin-bottom:10px;color:#7a5c43}
+.shipbar-t b{color:var(--orange-dark)}
+.shipprog{position:relative;height:8px;background:#f0dcc7;border-radius:99px}
+.shipprog i{display:block;height:100%;background:var(--orange);border-radius:99px;transition:width .4s;width:0}
+.shipprog .mini-truck{position:absolute;top:-8px;left:0;transition:left .4s;color:var(--orange-dark);background:var(--cream);border-radius:999px;width:24px;height:24px;display:grid;place-items:center;transform:translateX(-50%)}
+.shipprog svg{width:14px;height:14px}
+.ditems{flex:1;overflow-y:auto;padding:4px 18px;scrollbar-width:thin}
+.ditem{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.ditem img{width:64px;height:64px;border-radius:10px;object-fit:cover;flex:none;background:#f2e4d1}
+.dimid{flex:1;min-width:0}
+.dimid .n{font-size:13px;font-weight:800;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dimid .u{font-size:11.5px;color:var(--mut);font-weight:700;margin-top:3px}
+.stepsm{display:inline-flex;align-items:center;background:var(--cream);border-radius:9px;margin-top:9px;border:1px solid var(--line)}
+.stepsm button{width:27px;height:27px;display:grid;place-items:center;color:#8a6a4f;transition:.15s}
+.stepsm button:hover{color:var(--red)}
+.stepsm svg{width:13px;height:13px}
+.stepsm .qc{min-width:27px;text-align:center;font-weight:800;font-size:13px}
+.diright{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.lt{font-family:'Baloo 2';font-weight:800;font-size:15px}
+.rm{color:#c9b6a2;width:27px;height:27px;border-radius:8px;display:grid;place-items:center;transition:.15s}
+.rm:hover{color:var(--red);background:#ffe9e6}
+.rm svg{width:14px;height:14px}
+.dempty{text-align:center;padding:56px 12px;color:var(--mut)}
+.dempty svg{width:44px;height:44px;color:#d9c3ab;margin:0 auto 12px;display:block}
+.dempty p{font-size:13.5px;font-weight:700;line-height:1.6}
+.dempty button{margin-top:16px;color:var(--price);font-weight:800;border:1.5px solid var(--orange);border-radius:999px;padding:9px 20px;transition:.15s}
+.dempty button:hover{background:var(--orange);color:#fff}
+.dfoot{border-top:1px solid var(--line);padding:14px 18px 18px;background:var(--paper)}
+.promo{display:flex;gap:8px}
+.promo input{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;font-weight:700;min-width:0;text-transform:uppercase;background:var(--paper)}
+.promo input:focus{outline:0;border-color:var(--orange)}
+.promo input.shake{animation:shake .3s}
+.promo button{background:var(--ink);color:#fff;border-radius:10px;padding:0 16px;font-weight:800;font-size:13px;transition:.15s}
+.promo button:hover{background:#3a2b20}
+.perr{font-size:11.5px;color:var(--red);font-weight:700;margin-top:6px;display:none}
+.cchip{display:flex;align-items:center;gap:8px;background:#fff3ea;border:1.5px dashed var(--orange);border-radius:10px;padding:9px 12px;font-weight:800;font-size:12.5px;color:var(--orange-dark)}
+.cchip svg{width:14px;height:14px}
+.cchip em{font-style:normal;color:var(--mut);font-weight:700;font-size:11.5px;margin-left:2px}
+.cchip .prmv{margin-left:auto;color:#c79c7f;display:grid;place-items:center;width:22px;height:22px;border-radius:6px}
+.cchip .prmv:hover{color:var(--red);background:#ffe9e6}
+.cchip .prmv svg{width:13px;height:13px}
+.tots{margin:13px 0 12px;display:flex;flex-direction:column;gap:6px}
+.trow{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#7a5c43}
+.trow .free{color:var(--green)}
+.trow .disc{color:var(--red)}
+.trow.b{font-size:17.5px;color:var(--ink);font-family:'Baloo 2';font-weight:800;margin-top:4px;padding-top:10px;border-top:1px dashed var(--line)}
+.cobtn{width:100%;background:var(--orange);color:#fff;border-radius:12px;padding:14px;font-family:'Baloo 2';font-weight:800;font-size:17px;box-shadow:0 8px 18px -8px rgba(220,60,0,.6);transition:.15s}
+.cobtn:hover{background:var(--orange-dark)}
+.cobtn:disabled{background:#d9c3ab;box-shadow:none;cursor:not-allowed}
+
+/* ---------- modals ---------- */
+.modal{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.mscrim{position:absolute;inset:0;background:rgba(36,19,9,.55)}
+.mwin{position:relative;background:var(--paper);border-radius:18px;max-width:min(760px,94vw);width:100%;max-height:90vh;overflow:auto;animation:pop .32s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes pop{from{transform:scale(.94) translateY(12px);opacity:0}}
+.mclose{position:absolute;top:10px;right:10px;z-index:3;width:34px;height:34px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center;color:#8a6a4f;transition:.15s}
+.mclose:hover{color:var(--ink)}
+.mclose svg{width:16px;height:16px}
+.qv{display:flex}
+.qv-img{flex:0 0 300px;overflow:hidden;border-radius:18px 0 0 18px;background:linear-gradient(135deg,#f6ecdf,#efe0cd)}
+.qv-img img{width:100%;aspect-ratio:1;object-fit:cover}
+.qv-b{padding:24px 26px;flex:1;min-width:0}
+.qv-b .badge{position:static;display:inline-block;margin-bottom:10px}
+.qv-b h3{font-family:'Baloo 2';font-size:22px;line-height:1.15;margin-bottom:8px;padding-right:26px}
+.qv-blurb{font-size:13.5px;color:#7a5c43;font-weight:600;margin:10px 0 4px;line-height:1.5}
+.qv-specs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0 4px}
+.qv-specs:empty{display:none}
+.spec{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.spec span{display:block;font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.spec b{display:block;font-size:13px;font-weight:800;margin-top:2px}
+.qv-affirm{margin-top:10px;font-size:12px;font-weight:700;color:#7a5c43;background:var(--cream);border-radius:9px;padding:8px 12px;display:inline-flex;gap:6px;align-items:center}
+.qv-affirm svg{width:13px;height:13px;color:var(--navy)}
+.qv-affirm b{color:var(--navy)}
+.qv-info{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.qv-info div{display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;color:#5d4634}
+.qv-info svg{width:14px;height:14px;color:var(--orange);flex:none}
+.qv-prow{margin:10px 0 2px}
+.qv-row{display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.qv-row .lbl{font-size:12.5px;font-weight:800;color:#5d4634}
+.qv-add{border:1.5px solid var(--orange);color:var(--price);border-radius:11px;padding:11px 18px;font-weight:800;font-size:14px;display:flex;gap:8px;align-items:center;transition:.15s}
+.qv-add:hover{background:var(--orange);color:#fff}
+.qv-add svg{width:16px;height:16px}
+.qv-buy{background:var(--ink);color:#fff;border-radius:11px;padding:12px 18px;font-weight:800;font-size:14px;transition:.15s}
+.qv-buy:hover{background:#3a2b20}
+/* wheel */
+#wheelM .mwin{max-width:420px;overflow:visible}
+.whead{background:var(--red);color:#fff;border-radius:18px 18px 0 0;padding:16px 52px 16px 16px;display:flex;align-items:center;justify-content:center;gap:9px;font-family:'Baloo 2';font-weight:800;font-size:19px;text-align:center}
+.whead svg{width:20px;height:20px}
+.wclose{position:absolute;top:9px;right:9px;width:32px;height:32px;border-radius:999px;background:rgba(0,0,0,.22);color:#fff;display:grid;place-items:center;transition:.15s}
+.wclose:hover{background:rgba(0,0,0,.4)}
+.wclose svg{width:15px;height:15px}
+.wbody{padding:24px 24px 28px;text-align:center}
+.wbody>p{font-size:12px;font-weight:700;color:var(--mut);margin-bottom:14px}
+.wheelwrap{position:relative;width:300px;margin:0 auto}
+#wheelC{display:block;width:300px;height:300px;transition-property:transform}
+.wptr{position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid var(--ink);filter:drop-shadow(0 3px 3px rgba(0,0,0,.3));z-index:2}
+.wspin{width:100%;margin-top:20px;background:var(--orange);color:#fff;border-radius:12px;padding:14px;font-family:'Baloo 2';font-weight:800;font-size:17px;box-shadow:0 8px 18px -8px rgba(220,60,0,.6);transition:.15s}
+.wspin:hover:not(:disabled){background:var(--orange-dark)}
+.wspin:disabled{background:#d9c3ab;box-shadow:none;cursor:not-allowed}
+.wres{display:none;margin-top:16px;background:#fff4ec;border:1.5px dashed var(--orange);border-radius:14px;padding:16px;animation:fadeup .3s}
+.wres.on{display:block}
+.wres .wt{font-family:'Baloo 2';font-size:22px;color:var(--orange-dark)}
+.wres .wc{display:inline-flex;gap:7px;align-items:center;margin-top:9px;background:var(--paper);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-weight:800;font-size:13px;cursor:pointer;transition:.15s}
+.wres .wc:hover{border-color:var(--orange)}
+.wres .wc svg{width:13px;height:13px}
+.wres p{font-size:11.5px;color:var(--mut);font-weight:700;margin-top:10px;line-height:1.5}
+.wres-shop{margin-top:12px;background:var(--ink);color:#fff;border-radius:999px;padding:10px 20px;font-weight:800;font-size:13px;transition:.15s}
+.wres-shop:hover{background:#3a2b20}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}}
+
+/* ---------- checkout page ---------- */
+.co{position:fixed;inset:0;z-index:80;background:var(--cream);overflow-y:auto;display:none}
+.co.on{display:block}
+.co-h{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--line);z-index:5}
+.co-h-in{max-width:1060px;margin:auto;display:flex;align-items:center;gap:14px;padding:12px 20px}
+.mini-logo{display:flex;gap:9px;align-items:center;font-family:'Baloo 2';font-weight:800;font-size:19px;color:var(--orange-dark)}
+.mini-logo .mk{width:30px;height:30px;border-radius:9px;background:var(--orange);color:#fff;display:grid;place-items:center}
+.mini-logo svg{width:16px;height:16px}
+.co-secure{margin-left:auto;display:flex;gap:6px;align-items:center;font-size:11.5px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+.co-secure svg{width:13px;height:13px}
+.co-x{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;color:var(--mut);transition:.15s}
+.co-x:hover{background:var(--cream);color:var(--ink)}
+.co-x svg{width:17px;height:17px}
+.co-body{max-width:1060px;margin:auto;padding:26px 20px 90px;display:grid;grid-template-columns:1fr 360px;gap:26px}
+.steps{display:flex;align-items:center;grid-column:1/-1;margin-bottom:4px}
+.step{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px;color:#b39a83;white-space:nowrap}
+.step .n{width:26px;height:26px;border-radius:999px;background:#efe0cd;display:grid;place-items:center;font-size:12px;flex:none}
+.step.on{color:var(--orange-dark)}
+.step.on .n{background:var(--orange);color:#fff}
+.step.done{color:var(--green)}
+.step.done .n{background:var(--green);color:#fff}
+.step-sep{flex:1;height:2px;background:#efe0cd;margin:0 12px;min-width:16px}
+.cpanel{display:none}
+.cpanel.on{display:block}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:24px}
+.panel h2{font-family:'Baloo 2';font-size:20px;margin-bottom:6px}
+.panel .pnote{font-size:12px;color:var(--mut);font-weight:700;margin-bottom:18px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12.5px;font-weight:800;color:#5d4634}
+.field input,.field select{border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14.5px;background:var(--paper);transition:.15s;width:100%}
+.field input:focus,.field select:focus{outline:0;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,77,10,.12)}
+.field.err input{border-color:var(--red);animation:shake .3s}
+.field .emsg{display:none;font-size:11.5px;color:var(--red);font-weight:700}
+.field.err .emsg{display:block}
+.field .cbrand{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:#eef4fb;color:var(--navy);font-weight:800;font-size:11px;padding:4px 8px;border-radius:7px;display:none;letter-spacing:.03em}
+.field.hasbrand{position:relative}
+.field.hasbrand input{padding-right:88px}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.btn-main{margin-top:20px;background:var(--orange);color:#fff;border-radius:12px;padding:14px 22px;font-family:'Baloo 2';font-weight:800;font-size:16px;box-shadow:0 8px 18px -8px rgba(220,60,0,.6);transition:.15s}
+.btn-main:hover{background:var(--orange-dark)}
+/* delivery options */
+.delhead{font-family:'Baloo 2';font-size:20px;margin:26px 0 4px}
+.delnote{font-size:12px;color:var(--mut);font-weight:700;margin-bottom:14px}
+.delopt{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.15s}
+.delopt.on{border-color:var(--orange);background:#fff5ee;box-shadow:0 0 0 3px rgba(255,77,10,.1)}
+.delopt input{accent-color:var(--orange);width:18px;height:18px;flex:none}
+.delopt .dt{flex:1}
+.delopt .dt b{display:block;font-size:14.5px;font-weight:800}
+.delopt .dt span{display:block;font-size:12.5px;color:var(--mut);font-weight:700;margin-top:2px}
+.delopt .dp{font-family:'Baloo 2';font-weight:800;font-size:16px;color:var(--price);white-space:nowrap}
+.delopt .dp.free{color:var(--green)}
+/* pay methods */
+.pm{display:flex;gap:13px;align-items:center;border:1.5px solid var(--line);border-radius:14px;padding:15px 17px;margin-bottom:12px;cursor:pointer;transition:.15s}
+.pm.on{border-color:var(--orange);background:#fff5ee;box-shadow:0 0 0 3px rgba(255,77,10,.1)}
+.pm-ic{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex:none}
+.pm-ic.pp{background:#eef4fb;font-size:19px}
+.pm-ic.y{background:#fff4d6;color:#a07400}
+.pm-ic svg{width:20px;height:20px}
+.pm-t{font-weight:800;font-size:14.5px}
+.pm-s{font-size:12.5px;color:var(--mut);font-weight:700;margin-top:2px}
+.pm-dot{margin-left:auto;width:20px;height:20px;border-radius:999px;border:2px solid #d9c3ab;flex:none;transition:.15s}
+.pm.on .pm-dot{border-color:var(--orange);background:var(--orange);box-shadow:inset 0 0 0 4.5px #fff}
+.payship{display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:700;color:#7a5c43;background:var(--cream);border-radius:11px;padding:11px 14px;margin:16px 0}
+.payship svg{width:14px;height:14px;color:var(--orange);flex:none}
+.payship button{color:var(--blue);font-weight:800;font-size:12px;text-decoration:underline;margin-left:auto;flex:none}
+/* card entry box */
+.cardbox{display:none;border:1.5px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;background:var(--paper)}
+.cardbox.on{display:block}
+.cardbox .cbnote{font-size:12px;color:var(--mut);font-weight:700;margin-bottom:14px}
+.paycta{margin-top:16px;width:100%;background:var(--yellow);color:var(--navy);border-radius:12px;padding:15px;font-weight:800;font-size:16px;display:flex;gap:9px;align-items:center;justify-content:center;transition:.15s;box-shadow:0 8px 18px -8px rgba(200,150,0,.55);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.paycta:hover{filter:brightness(1.04)}
+.paycta.cardmode{background:var(--blue);color:#fff}
+.paycta svg{width:17px;height:17px}
+.paycta .ppmono{font-size:15px}
+.pay-note{text-align:center;font-size:11.5px;color:var(--mut);font-weight:700;margin-top:12px}
+/* summary */
+.sum{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;position:sticky;top:86px}
+.co.done .sum{display:none}
+.sum h3{font-family:'Baloo 2';font-size:17px;margin-bottom:12px}
+.sitem{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);align-items:center}
+.sitem img{width:44px;height:44px;border-radius:9px;object-fit:cover;flex:none;background:#f2e4d1}
+.sitem .n{flex:1;font-size:12.5px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-width:0}
+.sitem .p{font-weight:800;font-size:13px;font-family:'Baloo 2';white-space:nowrap}
+.promo-area{margin-top:14px}
+.sum-secure{margin-top:14px;display:flex;gap:7px;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
+.sum-secure svg{width:12px;height:12px;color:var(--blue)}
+/* confirmation */
+#panelDone{grid-column:1/-1}
+.done-wrap{text-align:center;max-width:560px;margin:14px auto 0}
+.ck{width:84px;height:84px;display:block;margin:0 auto 16px}
+.ck circle{stroke:var(--green);stroke-width:2.5;stroke-dasharray:152;stroke-dashoffset:152;animation:draw .55s ease-out forwards}
+.ck path{stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:36;stroke-dashoffset:36;animation:draw .35s .45s ease-out forwards}
+.ck.navy circle,.ck.navy path{stroke:var(--blue)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done-wrap h2{font-family:'Baloo 2';font-size:31px}
+.done-sub{font-size:14px;font-weight:700;color:#7a5c43;margin-top:6px}
+.orderchip{display:inline-flex;gap:9px;align-items:center;background:var(--paper);border:1.5px dashed var(--orange);padding:10px 18px;border-radius:999px;font-weight:800;margin:18px 0 6px;color:var(--orange-dark);transition:.15s}
+.orderchip:hover{background:#fff3ea}
+.orderchip svg{width:15px;height:15px}
+.dcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:8px 22px;margin:14px 0 4px;text-align:left}
+.drow{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:13.5px;font-weight:700;color:#7a5c43}
+.drow:last-child{border-bottom:0}
+.drow b{color:var(--ink);text-align:right}
+.oitems{max-height:180px;overflow-y:auto;scrollbar-width:thin;margin:8px 0;border-top:1px dashed var(--line)}
+.oitem{display:flex;justify-content:space-between;gap:14px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:12.5px;font-weight:600;color:#7a5c43}
+.oitem b{color:var(--ink);white-space:nowrap}
+.done-mail{font-size:12px;color:var(--mut);font-weight:700;margin-top:10px}
+.done-btns{margin-top:20px}
+.linkbtn{display:block;margin:14px auto 0;color:#7a5c43;font-size:12.5px;font-weight:700}
+.linkbtn:hover{text-decoration:underline}
+
+/* ---------- PayPal lightbox ---------- */
+.fb{position:fixed;inset:0;z-index:100;background:rgba(6,20,45,.58);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:18px}
+.fb.on{display:flex}
+.fbwin{width:min(410px,100%);background:#fff;border-radius:18px;overflow:hidden;animation:pop .32s cubic-bezier(.2,.9,.3,1.15);box-shadow:0 30px 80px -20px rgba(0,10,30,.7);max-height:94vh;display:flex;flex-direction:column}
+.fbh{background:#fff;border-bottom:1px solid #e3e8ee;padding:14px 18px;display:flex;align-items:center;gap:10px;flex:none}
+.fbh .ppword{font-size:23px}
+.fbh .fbsec{margin-left:auto;display:flex;gap:5px;align-items:center;font-size:10.5px;font-weight:800;color:#687181;text-transform:uppercase;letter-spacing:.07em}
+.fbh .fbsec svg{width:12px;height:12px;color:#687181}
+.fbb{padding:26px 24px;min-height:340px;display:flex;flex-direction:column;overflow:auto;color:#2c2e2f}
+.fbview{display:none;flex-direction:column;gap:14px;animation:fadeup .25s}
+.fbview.on{display:flex}
+.pplogo-lg{display:flex;justify-content:center}
+.pplogo-lg .ppword{font-size:34px}
+.fbh2{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:center;font-size:21px;font-weight:700;color:#0c0c0c}
+.fbsub{text-align:center;font-size:13px;color:#5f6a75;font-weight:500;line-height:1.55}
+.fbsub b{color:#0c0c0c;font-weight:700}
+.fbin{border:1px solid #cfd4da;border-radius:8px;padding:13px 14px;font-size:16px;transition:.15s;width:100%;background:#fff}
+.fbin:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,112,186,.16)}
+.fbbtn{background:var(--blue);color:#fff;border-radius:999px;padding:14px;font-weight:700;font-size:16px;transition:.15s;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.fbbtn:hover:not(:disabled){background:#005ea6}
+.fbbtn:disabled{opacity:.6;cursor:not-allowed}
+.fbbtn2{background:#fff;color:var(--blue);border:2px solid var(--blue);border-radius:999px;padding:12px;font-weight:700;font-size:15px;transition:.15s;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.fbbtn2:hover{background:#f0f7fd}
+.fberr{font-size:12.5px;color:#c72e29;font-weight:600;display:none;text-align:center}
+.fberr.show{display:block}
+.pwwrap{position:relative}
+.pwwrap .fbin{padding-right:46px}
+.eyebtn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;display:grid;place-items:center;color:#8b95a6;border-radius:8px}
+.eyebtn:hover{color:#0c0c0c;background:#eef2f8}
+.eyebtn svg{width:16px;height:16px}
+.emailchip{display:flex;align-items:center;gap:8px;background:#f2f6fa;border-radius:8px;padding:11px 14px;font-weight:600;font-size:15px;color:#0c0c0c}
+.emailchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.emailchip button{margin-left:auto;font-size:12.5px;color:var(--blue);font-weight:700;flex:none}
+.stayrow{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#2c2e2f;cursor:pointer;user-select:none}
+.stayrow input{width:20px;height:20px;accent-color:var(--blue);cursor:pointer}
+.fbproc{display:flex;flex-direction:column;align-items:center;gap:16px;justify-content:center;flex:1;text-align:center}
+.bigspin{width:44px;height:44px;border:4px solid #dfe6f2;border-top-color:var(--blue);border-radius:999px;animation:rot .8s linear infinite}
+.spin{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:999px;animation:rot .7s linear infinite;display:inline-block}
+@keyframes rot{to{transform:rotate(1turn)}}
+.fbrev-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+.fbrev-merch{display:flex;gap:9px;align-items:center;font-weight:700;font-size:15px;color:#0c0c0c}
+.fbmini{width:26px;height:26px;border-radius:7px;background:var(--orange);color:#fff;display:grid;place-items:center}
+.fbmini svg{width:14px;height:14px}
+.fbrev-amount{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:26px;color:#0c0c0c}
+.fbrev-row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;font-weight:500;color:#5f6a75;padding:12px 0;border-bottom:1px solid #edf0f3;align-items:center}
+.fbrev-row b{color:#0c0c0c;text-align:right;font-weight:700}
+.fbrev-row b button{color:var(--blue);font-weight:700;font-size:12px;margin-left:8px;text-decoration:underline}
+.fbsecnote{display:flex;gap:8px;align-items:flex-start;background:#f2f6fa;border-radius:8px;padding:11px 13px;font-size:12.5px;font-weight:500;color:#33506b;line-height:1.5;text-align:left}
+.fbsecnote svg{width:15px;height:15px;flex:none;margin-top:1px;color:var(--blue)}
+.termsline{font-size:11.5px;color:#8b95a6;text-align:center;line-height:1.5}
+.termsline u{color:var(--blue)}
+.fbpay{background:var(--yellow);color:var(--navy);border-radius:999px;padding:15px;font-weight:700;font-size:16px;transition:.15s;display:flex;gap:10px;align-items:center;justify-content:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.fbpay:hover:not(:disabled){filter:brightness(1.04)}
+.fbpay:disabled{opacity:.7;cursor:wait}
+.fbpay .ppmono{font-size:17px}
+.fb-linkbtn{background:none;color:#5f6a75;font-size:13px;font-weight:500;padding:4px;text-align:center}
+.fb-linkbtn:hover{text-decoration:underline}
+/* OTP */
+.otprow{display:flex;gap:8px;justify-content:center}
+.otpin{width:44px;height:52px;border:1px solid #cfd4da;border-radius:8px;text-align:center;font-size:22px;font-weight:700;color:#0c0c0c;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;outline:0;transition:.15s;caret-color:var(--blue)}
+.otpin:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,112,186,.16)}
+/* hold to confirm */
+.holdbtn{position:relative;width:100%;background:var(--yellow);border-radius:999px;padding:16px;overflow:hidden;user-select:none;-webkit-user-select:none;touch-action:none}
+.holdfill{position:absolute;top:0;left:0;bottom:0;width:0%;background:#e8a400}
+.holdlbl{position:relative;z-index:1;display:flex;gap:9px;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:var(--navy);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.holdlbl svg{width:16px;height:16px}
+.holdbtn.ok{background:var(--green)}
+.holdbtn.ok .holdlbl{color:#fff}
+.holdbtn.ok .holdfill{width:0}
+.holdhint{text-align:center;font-size:11.5px;color:#9aa4b5;font-weight:600}
+/* declined */
+.decl-x{width:64px;height:64px;border-radius:999px;background:#fdecea;display:grid;place-items:center;margin:0 auto;color:var(--red)}
+.decl-x svg{width:30px;height:30px}
+.declcard{background:#f7f9fc;border-radius:12px;padding:2px 14px;text-align:left;width:100%}
+.btn-line2{border:1.5px solid #cfd4da;border-radius:999px;padding:12px;font-weight:700;font-size:13px;color:#5f6a75;transition:.15s;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.btn-line2:hover:not(:disabled){border-color:#0c0c0c;color:#0c0c0c}
+.btn-line2:disabled{opacity:.55;cursor:not-allowed}
+
+/* ---------- settings modal ---------- */
+#setM{z-index:150}
+#setM .mwin{max-width:500px}
+.set-head{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.set-head h3{font-family:'Baloo 2';font-size:20px}
+.set-head > svg{width:20px;height:20px;color:var(--orange)}
+.set-body{padding:6px 20px 20px;max-height:72vh;overflow:auto}
+.set-sec{margin-top:20px}
+.set-sec h4{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.setrow{padding:14px 0;border-bottom:1px dashed var(--line)}
+.setrow:last-child{border-bottom:0}
+.setrow-top{display:flex;align-items:flex-start;gap:12px}
+.setrow-top > div:first-child{flex:1}
+.setrow-t{font-weight:800;font-size:14.5px}
+.setrow-d{font-size:12px;color:var(--mut);font-weight:600;line-height:1.5;margin-top:3px}
+.sw{position:relative;width:48px;height:27px;flex:none;margin-left:auto}
+.sw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.sw i{position:absolute;inset:0;background:#e6d6c2;border-radius:99px;transition:.2s;pointer-events:none}
+.sw i::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;background:#fff;border-radius:99px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.sw input:checked + i{background:var(--green)}
+.sw input:checked + i::after{left:24px}
+.amt{display:none;align-items:center;gap:10px;margin-top:12px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:10px 12px;flex-wrap:wrap}
+.amt.on{display:flex}
+.amt label{font-size:12px;font-weight:800;color:#5d4634;white-space:nowrap}
+.amt .pre{font-weight:800;color:var(--mut)}
+.amt input{width:110px;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font-weight:800;font-size:14px;outline:0;background:var(--paper)}
+.amt input:focus{border-color:var(--orange)}
+.via{display:flex;gap:8px;margin-top:12px}
+.via label{flex:1;display:flex;gap:8px;align-items:center;justify-content:center;border:1.5px solid var(--line);border-radius:10px;padding:9px;font-weight:800;font-size:13px;cursor:pointer;transition:.15s}
+.via input{accent-color:var(--orange)}
+.via label:has(input:checked){border-color:var(--orange);background:#fff5ee}
+.btn-line{border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;font-weight:800;font-size:13px;color:#7a5c43;transition:.15s}
+.btn-line:hover{border-color:var(--orange);color:var(--orange-dark)}
+.btn-main.sm{margin-top:18px;padding:11px 14px;font-size:14px;width:100%}
+
+/* ---------- info modal ---------- */
+#infoM{z-index:160}
+#infoM .mwin{max-width:520px}
+.info-head{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.info-head h3{font-family:'Baloo 2';font-size:20px}
+.info-head > svg{width:20px;height:20px;color:var(--orange)}
+.info-body{padding:8px 22px 22px;max-height:70vh;overflow:auto}
+.info-sub{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin:12px 0 6px}
+.info-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.info-list li{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;font-weight:600;color:#5d4634;line-height:1.55}
+.info-list svg{width:17px;height:17px;color:var(--orange);flex:none;margin-top:2px}
+.info-list b{color:var(--ink)}
+
+/* ---------- toasts + confetti ---------- */
+.toasts{position:fixed;top:16px;right:16px;z-index:120;display:flex;flex-direction:column;gap:10px;max-width:min(340px,calc(100vw - 24px))}
+.toast{background:var(--paper);border-radius:13px;box-shadow:0 16px 40px -12px rgba(60,25,0,.4);padding:12px 16px 12px 12px;display:flex;gap:11px;align-items:center;animation:tin .3s cubic-bezier(.2,.9,.3,1.15);border:1px solid var(--line)}
+.toast.out{animation:tout .3s forwards}
+@keyframes tin{from{opacity:0;transform:translateX(24px)}}
+@keyframes tout{to{opacity:0;transform:translateX(24px)}}
+.tic{width:36px;height:36px;border-radius:999px;background:var(--orange);color:#fff;display:grid;place-items:center;flex:none}
+.tic svg{width:17px;height:17px}
+.toast b{display:block;font-size:13.5px;line-height:1.3}
+.toast span{display:block;font-size:12px;color:var(--mut);font-weight:600;margin-top:2px;line-height:1.35}
+#confettiC{position:fixed;inset:0;z-index:130;pointer-events:none}
+
+/* ---------- responsive ---------- */
+@media(max-width:900px){
+  .co-body{grid-template-columns:1fr}
+  .sum{position:static}
+}
+@media(max-width:760px){
+  .cats{position:static}
+  .logo-sub{display:none}
+}
+@media(max-width:640px){
+  .card.wide{grid-column:auto;flex-direction:column}
+  .card.wide .imgw{width:100%;aspect-ratio:1}
+  .qv{flex-direction:column}
+  .qv-img{flex:none;border-radius:18px 18px 0 0}
+  .qv-specs{grid-template-columns:1fr}
+  .spin-btn span{display:none}
+  .flash-in{gap:10px}
+  .coupon-ticket{margin-left:0}
+  .fgrid{grid-template-columns:1fr}
+  .otprow{gap:5px}
+  .otpin{width:38px;height:48px;font-size:19px}
+  .pplogo-lg .ppword{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ticker-in,.fab svg,.cd i{animation:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ticker -->
+<div class="ticker"><div class="ticker-in" id="ticker">
+  <div class="tk-set">
+    <span>Flash Sale — up to 70% off select electronics</span>
+    <span>Free shipping on orders over $35</span>
+    <span>Use code SAVE5 — $5 off orders $25+</span>
+    <span>New: Wooting 80HE &amp; SayoDevice keypads in stock</span>
+    <span>Secure checkout with PayPal</span>
+    <span>Set purchase limits in Settings</span>
+  </div>
+</div></div>
+
+<!-- header -->
+<header class="hdr" id="hdr">
+  <div class="hdr-in">
+    <a class="logo" href="#" onclick="return false">
+      <span class="logo-mark"><i data-lucide="truck"></i></span>
+      <span><span class="logo-word">Shoppi</span><span class="logo-sub" style="display:block">Free shipping over $35</span></span>
+    </a>
+    <div class="search">
+      <input id="searchIn" type="text" placeholder="Search products…" autocomplete="off"/>
+      <button class="clr" id="searchClr" type="button" aria-label="Clear search"><i data-lucide="x"></i></button>
+      <button class="search-go" id="searchGo" type="button" aria-label="Search"><i data-lucide="search"></i></button>
+    </div>
+    <div class="hdr-acts">
+      <button class="spin-btn" id="hdrSpin" type="button"><i data-lucide="gift"></i><span>Spin &amp; Save</span></button>
+      <button class="cart-btn" id="setBtn" type="button" aria-label="Settings" title="Settings"><i data-lucide="settings"></i></button>
+      <button class="cart-btn" id="cartBtn" type="button" aria-label="Open cart"><i data-lucide="shopping-cart"></i><span class="cart-badge" id="cartBadge">0</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- categories
+     To add a new category: copy one of the buttons below and set data-cat
+     to the EXACT category name you use in the product list in the script. -->
+<nav class="cats"><div class="cats-in">
+  <div class="cats-scroll" id="catRow">
+    <button class="cat on" data-cat="All" type="button">All</button>
+    <button class="cat" data-cat="Electronics" type="button">Electronics</button>
+    <button class="cat" data-cat="Audio" type="button">Audio</button>
+    <button class="cat" data-cat="Computers" type="button">Computers</button>
+    <button class="cat" data-cat="Keyboards" type="button">Keyboards</button>
+    <button class="cat" data-cat="Cameras" type="button">Cameras</button>
+    <button class="cat" data-cat="Home &amp; Kitchen" type="button">Home &amp; Kitchen</button>
+    <button class="cat" data-cat="Fashion" type="button">Fashion</button>
+    <button class="cat" data-cat="Beauty" type="button">Beauty</button>
+    <button class="cat" data-cat="Jewelry" type="button">Jewelry</button>
+    <button class="cat" data-cat="Luxury" type="button">Luxury</button>
+    <button class="cat" data-cat="Fitness" type="button">Fitness</button>
+    <button class="cat" data-cat="Sports" type="button">Sports</button>
+    <button class="cat" data-cat="Outdoor" type="button">Outdoor</button>
+    <button class="cat" data-cat="Toys &amp; Games" type="button">Toys &amp; Games</button>
+    <button class="cat" data-cat="Garden &amp; Tools" type="button">Garden &amp; Tools</button>
+    <button class="cat" data-cat="Grocery" type="button">Grocery</button>
+    <button class="cat" data-cat="Pets" type="button">Pets</button>
+    <button class="cat" data-cat="Vehicles" type="button">Vehicles</button>
+    <button class="cat" data-cat="Real Estate" type="button">Real Estate</button>
+  </div>
+  <div class="cats-right">
+    <span id="cnt"></span>
+    <span class="sortwrap">
+      <select class="sortsel" id="sortSel" aria-label="Sort products">
+        <option value="pop">Most popular</option>
+        <option value="price-asc">Price: low → high</option>
+        <option value="price-desc">Price: high → low</option>
+        <option value="rating">Top rated</option>
+      </select>
+      <i data-lucide="chevron-down"></i>
+    </span>
+  </div>
+</div></nav>
+
+<!-- flash sale strip -->
+<section class="flash"><div class="flash-in">
+  <span class="flash-label"><i data-lucide="zap"></i>FLASH SALE</span>
+  <span class="flash-ends">Ends in</span>
+  <div class="cd"><span id="cdH">02</span><i>:</i><span id="cdM">47</span><i>:</i><span id="cdS">33</span></div>
+  <button class="coupon-ticket" id="ticket" type="button">
+    <span><span class="code">SAVE5</span><span class="desc" style="display:block">$5 off orders $25+ · tap to copy</span></span>
+    <i data-lucide="copy"></i>
+  </button>
+</div></section>
+
+<!-- trust strip -->
+<div class="trust"><div class="trust-in">
+  <span class="trust-i"><i data-lucide="truck"></i><span><b>Free shipping</b> on orders $35+</span></span>
+  <span class="trust-i"><i data-lucide="rotate-ccw"></i><span><b>30-day</b> free returns</span></span>
+  <span class="trust-i"><i data-lucide="shield-check"></i><span><b>2-year warranty</b> on electronics</span></span>
+  <span class="trust-i"><i data-lucide="lock"></i><span><b>Secure</b> PayPal checkout</span></span>
+</div></div>
+
+<!-- product grid -->
+<main><div class="grid" id="grid"></div></main>
+
+<!-- footer -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-brand">
+      <a class="logo" href="#" onclick="return false"><span class="logo-mark"><i data-lucide="truck"></i></span><span class="logo-word" style="color:#fff">Shoppi</span></a>
+      <p>Discover electronics, keyboards, home essentials, vehicles, real estate, and more at everyday low prices — with free shipping on orders over $35 and secure PayPal checkout.</p>
+      <div class="fbadges">
+        <span class="fbadge"><i data-lucide="shield-check"></i>PayPal Buyer Protection</span>
+        <span class="fbadge"><i data-lucide="lock"></i>Secure SSL Checkout</span>
+        <span class="fbadge"><i data-lucide="rotate-ccw"></i>30-Day Returns</span>
+      </div>
+    </div>
+    <div class="foot-links">
+      <div class="fcol"><h4>Customer Service</h4>
+        <span class="flink">Track Your Order</span>
+        <span class="flink">Returns &amp; Refunds</span>
+        <span class="flink">Shipping Information</span>
+        <span class="flink">Contact Us</span>
+        <span class="flink">FAQs</span>
+        <button class="flink act" id="footSetBtn" type="button">Settings</button>
+      </div>
+      <div class="fcol"><h4>Company</h4>
+        <span class="flink">About Shoppi</span>
+        <span class="flink">Careers</span>
+        <span class="flink">Press</span>
+        <span class="flink">Sustainability</span>
+        <button class="flink act" id="footInfoBtn" type="button">About this simulation</button>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <b>Shoppi is a shopping simulation.</b> No real products are sold and no real payments are processed — tap the <b>ⓘ</b> button for details.<br>
+    © 2025 Shoppi.
+  </div>
+</footer>
+
+<!-- floating buttons: spin (right) + info (left) -->
+<button class="fab" id="fab" type="button" aria-label="Spin and save"><i data-lucide="gift"></i><span class="fab-dot" id="fabDot">1</span></button>
+<button class="infobtn" id="infoBtn" type="button" aria-label="About this website" title="About this website"><i data-lucide="info"></i></button>
+
+<!-- scrim + cart drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Shopping cart">
+  <div class="dhead"><h3>Your Cart <span id="dCount" style="color:var(--mut)"></span></h3><button class="xbtn" id="dClose" type="button" aria-label="Close cart"><i data-lucide="x"></i></button></div>
+  <div class="shipbar">
+    <div class="shipbar-t" id="dShipMsg"></div>
+    <div class="shipprog"><i id="dShipFill"></i><span class="mini-truck" id="dShipTruck"><i data-lucide="truck"></i></span></div>
+  </div>
+  <div class="ditems" id="dItems"></div>
+  <div class="dfoot">
+    <div class="promo-area" id="promoAreaD"></div>
+    <div class="tots" id="dTots"></div>
+    <button class="cobtn" id="coBtn" type="button">Checkout</button>
+  </div>
+</aside>
+
+<!-- quick view -->
+<div class="modal" id="qv">
+  <div class="mscrim" data-close="qv"></div>
+  <div class="mwin">
+    <button class="mclose" id="qvX" type="button" aria-label="Close"><i data-lucide="x"></i></button>
+    <div class="qv">
+      <div class="qv-img"><img id="qvImg" alt=""/></div>
+      <div class="qv-b">
+        <span class="badge" id="qvBadge"></span>
+        <h3 id="qvName"></h3>
+        <div id="qvStars"></div>
+        <div class="prow qv-prow" id="qvProw"></div>
+        <div class="qv-affirm" id="qvAffirm"><i data-lucide="wallet"></i><span id="qvAffirmTxt"></span></div>
+        <p class="qv-blurb" id="qvBlurb"></p>
+        <div class="qv-specs" id="qvSpecs"></div>
+        <div class="qv-info">
+          <div><i data-lucide="truck"></i><span id="qvShipInfo"></span></div>
+          <div><i data-lucide="rotate-ccw"></i><span>Free 30-day returns</span></div>
+          <div><i data-lucide="shield-check"></i><span>2-year warranty included</span></div>
+        </div>
+        <div class="qv-row">
+          <span class="lbl">Qty</span>
+          <span class="stepsm" style="margin-top:0">
+            <button id="qvMinus" type="button"><i data-lucide="minus"></i></button>
+            <span class="qc" id="qvQty">1</span>
+            <button id="qvPlus" type="button"><i data-lucide="plus"></i></button>
+          </span>
+          <button class="qv-add" id="qvAdd" type="button"><i data-lucide="plus"></i>Add to cart</button>
+          <button class="qv-buy" id="qvBuy" type="button">Buy now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- checkout page -->
+<div class="co" id="co">
+  <div class="co-h"><div class="co-h-in">
+    <span class="mini-logo"><span class="mk"><i data-lucide="truck"></i></span>Shoppi</span>
+    <span class="co-secure"><i data-lucide="lock"></i>Secure checkout</span>
+    <button class="co-x" id="coX" type="button" aria-label="Close checkout"><i data-lucide="x"></i></button>
+  </div></div>
+  <div class="co-body">
+    <div class="steps">
+      <div class="step on" id="st1"><span class="n">1</span>Shipping</div><div class="step-sep"></div>
+      <div class="step" id="st2"><span class="n">2</span>Payment</div><div class="step-sep"></div>
+      <div class="step" id="st3"><span class="n">3</span>Confirmation</div>
+    </div>
+
+    <div class="cpanel on" id="panelShip">
+      <div class="panel">
+        <h2>Shipping information</h2>
+        <p class="pnote">Enter your shipping details to continue with your order.</p>
+        <form id="shipForm" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="fName">Full name</label><input id="fName" autocomplete="off" placeholder="Jane Doe"/><span class="emsg"></span></div>
+            <div class="field"><label for="fEmail">Email</label><input id="fEmail" autocomplete="off" placeholder="you@example.com"/><span class="emsg"></span></div>
+            <div class="field full"><label for="fAddr">Street address</label><input id="fAddr" autocomplete="off" placeholder="123 Main Street"/><span class="emsg"></span></div>
+            <div class="field"><label for="fCity">City</label><input id="fCity" autocomplete="off" placeholder="City"/><span class="emsg"></span></div>
+            <div class="field"><label for="fZip">ZIP / Postal code</label><input id="fZip" autocomplete="off" placeholder="12345"/><span class="emsg"></span></div>
+            <div class="field full"><label for="fCountry">Country</label>
+              <select id="fCountry">
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        <h2 class="delhead">Delivery method</h2>
+        <p class="delnote" id="delNote">Choose how fast you want your order.</p>
+        <div id="delOpts"></div>
+        <button class="btn-main" id="shipNext" type="button">Continue to payment</button>
+      </div>
+    </div>
+
+    <div class="cpanel" id="panelPay">
+      <div class="panel">
+        <h2>Payment method</h2>
+        <p class="pnote">Your billing address is the same as your shipping address.</p>
+        <div class="pm on" id="pmA">
+          <span class="pm-ic pp"><span class="ppmono"><i>P</i><i>P</i></span></span>
+          <span><span class="pm-t">PayPal</span><span class="pm-s" style="display:block">The safer, easier way to pay</span></span>
+          <span class="pm-dot"></span>
+        </div>
+        <div class="pm" id="pmB">
+          <span class="pm-ic y"><i data-lucide="credit-card"></i></span>
+          <span><span class="pm-t">Debit or credit card</span><span class="pm-s" style="display:block">Visa, Mastercard, Amex, Discover</span></span>
+          <span class="pm-dot"></span>
+        </div>
+        <div class="cardbox" id="cardBox">
+          <p class="cbnote">Enter your card details. Shoppi will never store your card number.</p>
+          <div class="fgrid">
+            <div class="field full"><label for="cName">Name on card</label><input id="cName" autocomplete="off" placeholder="Jane Doe" inputmode="text"/></div>
+            <div class="field full hasbrand"><label for="cNum">Card number</label><span class="cbrand" id="cBrand"></span><input id="cNum" autocomplete="off" placeholder="1234 5678 9012 3456" inputmode="numeric"/></div>
+            <div class="field"><label for="cExp">Expiry (MM/YY)</label><input id="cExp" autocomplete="off" placeholder="MM/YY" inputmode="numeric" maxlength="5"/></div>
+            <div class="field"><label for="cCvc">Security code</label><input id="cCvc" autocomplete="off" placeholder="CVC" inputmode="numeric" maxlength="4"/></div>
+          </div>
+        </div>
+        <div class="payship"><i data-lucide="truck"></i><span id="payShipTxt"></span><button id="shipEdit" type="button">edit</button></div>
+        <button class="paycta" id="payCta" type="button"><span class="ppmono"><i>P</i><i>P</i></span> Pay <span id="payAmt">$0.00</span></button>
+        <p class="pay-note">You will be redirected to PayPal to securely complete your purchase.</p>
+      </div>
+    </div>
+
+    <div class="cpanel" id="panelDone"></div>
+
+    <aside class="sum">
+      <h3>Order summary</h3>
+      <div id="sumItems"></div>
+      <div class="promo-area" id="promoAreaS"></div>
+      <div class="tots" id="sumTots"></div>
+      <div class="sum-secure"><i data-lucide="shield-check"></i>Secured by PayPal Buyer Protection</div>
+    </aside>
+  </div>
+</div>
+
+<!-- PayPal lightbox -->
+<div class="fb" id="fb">
+  <div class="fbwin">
+    <div class="fbh">
+      <span class="ppword"><span>Pay</span><em>Pal</em></span>
+      <span class="fbsec"><i data-lucide="lock"></i>Secure</span>
+    </div>
+    <div class="fbb">
+      <!-- email -->
+      <form class="fbview on" id="fvEmail" novalidate>
+        <span class="pplogo-lg"><span class="ppword"><span>Pay</span><em>Pal</em></span></span>
+        <h3 class="fbh2">Log in</h3>
+        <input class="fbin" id="fbEmailIn" type="email" placeholder="Email or mobile number" autocomplete="off"/>
+        <span class="fberr" id="fbEmailErr">Please enter a valid email address.</span>
+        <button class="fbbtn" type="submit" id="fbNext">Next</button>
+        <button class="fb-linkbtn" type="button" id="fbTrouble1">Having trouble logging in?</button>
+        <button class="fbbtn2" type="button" id="fbSignup">Sign Up</button>
+      </form>
+      <!-- password -->
+      <form class="fbview" id="fvPass" novalidate>
+        <span class="pplogo-lg"><span class="ppword"><span>Pay</span><em>Pal</em></span></span>
+        <h3 class="fbh2">Log in</h3>
+        <div class="emailchip"><i data-lucide="mail" style="width:16px;height:16px;color:#8b95a6"></i><span id="fbEmailTxt"></span><button id="fbChange" type="button">change</button></div>
+        <div class="pwwrap">
+          <input class="fbin" id="fbPassIn" type="password" placeholder="Password"/>
+          <button class="eyebtn" id="fbEye" type="button" aria-label="Show password"><i data-lucide="eye"></i></button>
+        </div>
+        <label class="stayrow"><input type="checkbox" id="fbStay" checked/>Stay logged in for faster checkout</label>
+        <span class="fberr" id="fbPassErr">Please enter your password to continue.</span>
+        <button class="fbbtn" type="submit" id="fbLogin">Log in</button>
+        <button class="fb-linkbtn" type="button" id="fbTrouble2">Having trouble logging in?</button>
+      </form>
+      <!-- auth spinner (login or bank) -->
+      <div class="fbview" id="fvAuth"><div class="fbproc"><span class="bigspin"></span><p class="fbsub" id="authTxt">Logging you in…</p></div></div>
+      <!-- OTP verification -->
+      <div class="fbview" id="fvOtp">
+        <h3 class="fbh2" id="otpTitle">Verify it&rsquo;s you</h3>
+        <p class="fbsub" id="otpSub"></p>
+        <div class="otprow">
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1"/>
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 2"/>
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 3"/>
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 4"/>
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 5"/>
+          <input class="otpin" type="text" inputmode="numeric" maxlength="1" autocomplete="off" aria-label="Digit 6"/>
+        </div>
+        <span class="fberr" id="otpErr">Enter the 6-digit code.</span>
+        <button class="fbbtn" id="otpVerify" type="button">Verify</button>
+        <button class="fb-linkbtn" id="otpResend" type="button">Resend code</button>
+      </div>
+      <!-- hold to confirm -->
+      <div class="fbview" id="fvHold">
+        <h3 class="fbh2">Confirm this purchase</h3>
+        <p class="fbsub">You are paying <b id="holdAmtTxt">$0.00</b> to Shoppi.<br>Press and hold the button below for 2 seconds to authorize the payment.</p>
+        <button class="holdbtn" id="holdBtn" type="button"><span class="holdfill" id="holdFill"></span><span class="holdlbl"><i data-lucide="shield-check"></i><span>Press &amp; hold to pay</span></span></button>
+        <span class="holdhint">Releases safely if you let go early.</span>
+        <button class="fb-linkbtn" id="holdCancel" type="button">Cancel and return to Shoppi</button>
+      </div>
+      <!-- review -->
+      <div class="fbview" id="fvRev">
+        <div class="fbrev-top">
+          <span class="fbrev-merch"><span class="fbmini"><i data-lucide="truck"></i></span>Shoppi</span>
+          <span class="fbrev-amount" id="fbAmount">$0.00</span>
+        </div>
+        <div class="fbrev-row"><span>Ship to</span><b id="fbShipTo">—</b></div>
+        <div class="fbrev-row"><span>Pay with</span><b><span id="fbFundTxt">PayPal balance</span><button id="fbFund" type="button">Change</button></b></div>
+        <div class="fbrev-row"><span>Purchase protection</span><b>Included on this order</b></div>
+        <div class="fbsecnote" id="fbSecNote"><i data-lucide="shield-check"></i><span id="fbSecNoteTxt"></span></div>
+        <p class="termsline">You&rsquo;ll pay Shoppi for this order. <u>Shoppi terms</u> apply.</p>
+        <button class="fbpay" id="fbPay" type="button"><span class="ppmono"><i>P</i><i>P</i></span> Pay $0.00</button>
+        <button class="fb-linkbtn" type="button" id="fbCancel">Cancel and return to Shoppi</button>
+        <button class="fb-linkbtn" type="button" id="fbLogout">Log out of PayPal</button>
+      </div>
+      <!-- processing -->
+      <div class="fbview" id="fvProc"><div class="fbproc"><span class="bigspin"></span><p class="fbsub">Processing your payment…<br>Please don&rsquo;t close this window.</p></div></div>
+      <!-- done -->
+      <div class="fbview" id="fvDone"></div>
+      <!-- declined -->
+      <div class="fbview" id="fvDeclined">
+        <div class="fbproc">
+          <span class="decl-x"><i data-lucide="x"></i></span>
+          <h3 class="fbh2" style="margin:0" id="declHead">Your card was declined</h3>
+          <p class="fbsub" id="declSub"></p>
+          <div class="declcard">
+            <div class="fbrev-row"><span>Amount</span><b id="declAmt">$0.00</b></div>
+            <div class="fbrev-row"><span>Payment method</span><b id="declMethod">—</b></div>
+            <div class="fbrev-row"><span>Status</span><b>Declined</b></div>
+          </div>
+          <button class="fbbtn" id="declRetry" type="button">Try again</button>
+          <div style="display:flex;gap:10px">
+            <button class="btn-line2" id="declOther" type="button" style="flex:1">Try another way to pay</button>
+            <button class="btn-line2" id="declCancel" type="button" style="flex:1">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- settings modal -->
+<div class="modal" id="setM">
+  <div class="mscrim" id="setScrim"></div>
+  <div class="mwin">
+    <div class="set-head"><i data-lucide="settings"></i><h3>Settings</h3><button class="xbtn" id="setX" type="button" aria-label="Close settings"><i data-lucide="x"></i></button></div>
+    <div class="set-body">
+      <div class="set-sec">
+        <h4>Purchasing</h4>
+        <div class="setrow">
+          <div class="setrow-top">
+            <div>
+              <div class="setrow-t">Purchase limit</div>
+              <div class="setrow-d">When enabled, orders over this amount are declined at payment. The buyer only sees a declined payment — no reason is shown.</div>
+            </div>
+            <span class="sw"><input type="checkbox" id="swLimit"/><i></i></span>
+          </div>
+          <div class="amt" id="amtLimit"><label for="limitAmt">Decline orders over</label><span class="pre">$</span><input id="limitAmt" type="number" min="1" step="10" inputmode="numeric"/></div>
+        </div>
+        <div class="setrow">
+          <div class="setrow-top">
+            <div>
+              <div class="setrow-t">Verification code</div>
+              <div class="setrow-d">Require a 6-digit security code for purchases over this amount. Any code is accepted.</div>
+            </div>
+            <span class="sw"><input type="checkbox" id="swAuth"/><i></i></span>
+          </div>
+          <div class="amt" id="amtAuth"><label for="authAmt">Require verification over</label><span class="pre">$</span><input id="authAmt" type="number" min="1" step="10" inputmode="numeric"/></div>
+        </div>
+        <div class="setrow">
+          <div class="setrow-top">
+            <div>
+              <div class="setrow-t">Hold-to-confirm</div>
+              <div class="setrow-d">Very large purchases must be authorized by pressing and holding the pay button.</div>
+            </div>
+            <span class="sw"><input type="checkbox" id="swHold"/><i></i></span>
+          </div>
+          <div class="amt" id="amtHold"><label for="holdSetAmt">Require hold-to-confirm over</label><span class="pre">$</span><input id="holdSetAmt" type="number" min="1" step="100" inputmode="numeric"/></div>
+        </div>
+        <div class="setrow">
+          <div class="setrow-top"><div>
+            <div class="setrow-t">Send codes to</div>
+            <div class="setrow-d">Choose where verification codes are said to be delivered.</div>
+          </div></div>
+          <div class="via">
+            <label><input type="radio" name="via" id="viaEmail" checked/>Email</label>
+            <label><input type="radio" name="via" id="viaSms"/>SMS</label>
+          </div>
+        </div>
+      </div>
+      <div class="set-sec">
+        <h4>Demo data</h4>
+        <div class="setrow">
+          <div class="setrow-top"><div>
+            <div class="setrow-t">Reset demo data</div>
+            <div class="setrow-d">Clears your cart, wishlist, coupons, and spin status.</div>
+          </div><button class="btn-line" id="resetData" type="button">Reset</button></div>
+        </div>
+        <div class="setrow">
+          <div class="setrow-top"><div>
+            <div class="setrow-t">Restore default settings</div>
+            <div class="setrow-d">Resets all settings on this page to their defaults.</div>
+          </div><button class="btn-line" id="resetSet" type="button">Restore</button></div>
+        </div>
+      </div>
+      <button class="btn-main sm" id="setDone" type="button">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- info modal (the ⓘ button) -->
+<div class="modal" id="infoM">
+  <div class="mscrim" id="infoScrim"></div>
+  <div class="mwin">
+    <div class="info-head"><i data-lucide="info"></i><h3>About this website</h3><button class="xbtn" id="infoX" type="button" aria-label="Close"><i data-lucide="x"></i></button></div>
+    <div class="info-body">
+      <p class="info-sub">Please read before “buying”</p>
+      <ul class="info-list">
+        <li><i data-lucide="shopping-bag"></i><span><b>Shoppi is not a real store.</b> It is a shopping simulation built for fun and demonstration. No real products are sold, and nothing will ever be shipped.</span></li>
+        <li><i data-lucide="credit-card"></i><span><b>No real payments are processed.</b> The PayPal-style checkout is entirely simulated — no money moves, no accounts are accessed, and no transaction happens anywhere.</span></li>
+        <li><i data-lucide="wallet"></i><span><b>Any card number works.</b> Card numbers, expiry dates, and security codes you enter are never validated, stored, or sent anywhere.</span></li>
+        <li><i data-lucide="shield-check"></i><span><b>Nothing leaves your browser.</b> There is no server, no account, and no data collection. Everything you do happens locally on this page.</span></li>
+        <li><i data-lucide="database"></i><span><b>Your data stays local.</b> Your cart, wishlist, coupons, and settings are saved only in your own browser using localStorage.</span></li>
+        <li><i data-lucide="star"></i><span><b>All prices, ratings, and reviews are fictional</b> and generated automatically for each product.</span></li>
+        <li><i data-lucide="settings"></i><span><b>The gear icon opens Settings</b>, where you can configure purchase limits, verification steps, and hold-to-confirm for large purchases.</span></li>
+      </ul>
+      <button class="btn-main sm" id="infoDone" type="button">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- spin wheel -->
+<div class="modal" id="wheelM">
+  <div class="mscrim" data-close="wheel"></div>
+  <div class="mwin">
+    <div class="whead"><i data-lucide="gift"></i>SPIN &amp; SAVE</div>
+    <button class="wclose" id="wheelX" type="button" aria-label="Close"><i data-lucide="x"></i></button>
+    <div class="wbody">
+      <p>Spin once for a chance to win an exclusive coupon. One spin per customer.</p>
+      <div class="wheelwrap">
+        <span class="wptr"></span>
+        <canvas id="wheelC" width="300" height="300"></canvas>
+      </div>
+      <button class="wspin" id="wSpin" type="button">SPIN THE WHEEL</button>
+      <div class="wres" id="wRes">
+        <div class="wt" id="wResT"></div>
+        <button class="wc" id="wResCode" type="button"><i data-lucide="ticket"></i><span></span><i data-lucide="copy"></i></button>
+        <p id="wNote"></p>
+        <button class="wres-shop" id="wResShop" type="button">Start shopping</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<canvas id="confettiC"></canvas>
+
+<script>
+/* =====================================================================
+   IMAGES — easily give any product its own photo
+   ---------------------------------------------------------------------
+   By default every product gets an automatic photo based on its
+   'image-keyword' (the 5th value in each product line below).
+
+   To use your own image for a product, add a line to IMAGES using the
+   product's id as the key. Local paths work too ("images/tv.jpg").
+
+   Example:
+   const IMAGES = {
+     'kb1': 'https://example.com/wooting-80he.jpg',
+     'e2' : 'images/my-tv.png',
+   };
+
+   Set IMAGE_KEYWORDS to false if you'd rather have random photos for
+   every product that doesn't have a custom image.
+   ===================================================================== */
+const IMAGES = {
+  // 'kb1': 'https://example.com/wooting-80he.jpg',
+  // 'v2' : 'images/my-car.png',
+};
+const IMAGE_KEYWORDS = true; // true = auto keyword photos, false = random photos
+
+/* =====================================================================
+   HOW TO ADD A NEW PRODUCT — just copy one line and edit it:
+   ---------------------------------------------------------------------
+   ['id',    'Product Name',  'Category',     price, 'image-keyword', 'Short marketing blurb.', 'Spec: value|Spec: value', {badge:'Best seller', wide:true, claimed:80, left:5}],
+
+   - 'id'            : any unique short id — used for the cart, wishlist,
+                       and the IMAGES map above.
+   - 'Category'      : must exactly match one of the category buttons in
+                       the <nav> near the top of the HTML (add a new button
+                       there if you invent a new category).
+   - price           : number in dollars.
+   - 'image-keyword' : what the automatic photo should show (e.g. 'keyboard').
+   - Specs           : separated by '|' — shown in the product detail popup.
+   - {badge, wide, claimed, left} : optional extras — badge label, a big
+                       wide card, and a "claimed" progress bar. Use {} for none.
+
+   The star rating, review count, and the crossed-out "was" price are
+   generated automatically from the id and price. Nothing else to fill in.
+   ===================================================================== */
+const RAW = [
+/* ---- Keyboards ---- */
+['kb1','Wooting 80HE Hall Effect Keyboard','Keyboards',194.95,'keyboard','The 80% TKL with Lekker L60 Hall Effect switches, Rapid Trigger, and per-key actuation from 0.1mm.','Switches: Lekker L60 Hall Effect|Actuation: 0.1–4.0mm per key|Rapid Trigger: Adjustable|Polling: 8,000Hz|Layout: 80% TKL',{badge:'Best seller'}],
+['kb2','Wooting 60HE+ Hall Effect Keyboard','Keyboards',174.95,'keyboard','A 60% board with full analog input, Rapid Trigger, and a customizable actuation point on every key.','Switches: Lekker L60 Hall Effect|Actuation: 0.1–4.0mm per key|Rapid Trigger: Adjustable|Polling: 8,000Hz|Layout: 60%'],
+['kb3','SayoDevice O3C osu! Keypad','Keyboards',49,'keypad','A three-key osu! keypad with per-key tuning and a browser-based configurator.','Keys: 3 configurable|Tuning: Per-key|Config: Web-based|Polling: 1,000Hz',{badge:'Popular'}],
+['kb4','SayoDevice O2C osu! Keypad','Keyboards',39,'keypad','A two-key osu! stream keypad with per-key tuning and per-key RGB.','Keys: 2 configurable|Tuning: Per-key|RGB: Per-key'],
+['kb5','ApexLine TKL Hall Effect Keyboard','Keyboards',129,'keyboard','A tenkeyless board with magnetic Hall Effect switches and Rapid Trigger out of the box.','Switches: Magnetic Hall Effect|Rapid Trigger: Yes|Polling: 1,000Hz|Layout: TKL'],
+['kb6','Compact60 Mechanical Keyboard Kit','Keyboards',89,'keyboard','A 60% hot-swap kit with a gasket mount, FR4 plate, and carry case.','Mount: Gasket|Plate: FR4|Hot-swap: 5-pin|Includes: Case + foam kit'],
+['kb7','PBT Doubleshot Keycap Set — 140 Keys','Keyboards',34.99,'keycaps','A 140-key PBT doubleshot set in classic beige and gray.','Material: PBT doubleshot|Profile: Cherry|Keys: 140'],
+['kb8','Lubed Linear Switches — Pack of 90','Keyboards',24.99,'keycaps','Factory-lubed linear switches with a switch puller included.','Switches: 90 linear|Lube: Factory applied|Includes: Puller'],
+['kb9','MacroPad 6-Key Programmable Keypad','Keyboards',29.99,'keypad','A six-key programmable macropad with per-key RGB and a rotary knob.','Keys: 6 programmable|Knob: Rotary encoder|RGB: Per-key'],
+/* ---- Electronics ---- */
+['e1','Lumina X1 Smartphone 256GB','Electronics',899,'smartphone','Flagship performance with a 6.7-inch AMOLED display and all-day battery life.','Display: 6.7-inch AMOLED 120Hz|Storage: 256GB|Camera: 50MP triple-lens|Battery: 5,000mAh',{badge:'Best seller'}],
+['e2','Vision OLED 65-Inch 4K Smart TV','Electronics',1299.99,'television','Cinema-grade OLED color with Dolby Vision IQ and a 120Hz gaming mode.','Screen: 65-inch OLED|Resolution: 4K UHD|Refresh rate: 120Hz VRR|Audio: 60W 2.1ch',{badge:'Flash deal',wide:true,claimed:78,left:6}],
+['e3','Nova Drone 4K Camera Drone','Electronics',899,'drone','3-axis stabilized 4K camera with obstacle avoidance and 34-minute flight time.','Camera: 4K/60fps gimbal|Flight time: 34 minutes|Range: 10 km|Weight: 249g'],
+['e4','Pulse VR Pro Headset 256GB','Electronics',499,'virtualreality','Immersive mixed reality with pancake lenses and full-color passthrough.','Resolution: 2064x2208 per eye|Storage: 256GB|Refresh: 120Hz|Tracking: Inside-out 6DoF'],
+['e5','Orbit Smartwatch Series 8','Electronics',249,'smartwatch','GPS, advanced health tracking, and a 5-day always-on display.','Display: 1.43-inch AMOLED|Battery: 5 days|Water rating: 5 ATM|Sensors: HR, SpO2, GPS',{badge:'Top rated'}],
+['e6','EchoView 10-Inch Tablet 128GB','Electronics',549,'tablet','A 120Hz display with stylus support and up to 14 hours of battery life.','Display: 10.9-inch 2K 120Hz|Storage: 128GB + microSD|Battery: 14 hours|Stylus: Supported'],
+['e7','Shadow X Gaming Console 1TB','Electronics',499,'gaming','1TB SSD, 4K 120fps gaming, ray tracing, and a wireless controller.','Storage: 1TB NVMe SSD|Output: 4K 120fps|GPU: Ray tracing|Includes: Controller + HDMI 2.1',{badge:'Back in stock'}],
+['e8','Sentinel 4-Camera Security System','Electronics',199,'cctv','4K cameras with color night vision and no monthly fees.','Cameras: 4x 4K weatherproof|Night vision: Full color|Storage: 1TB local DVR|Audio: Two-way talk'],
+['e9','Helio Portable Power Station 1000W','Electronics',999,'generator','1,002Wh of clean lithium power with solar input and 10 outlets.','Capacity: 1,002Wh|Output: 1,000W pure sine|Outlets: 10 (AC/USB-C/DC)|Solar input: 200W MPPT'],
+['e10','SkyView 4K Laser Projector','Electronics',449,'projector','A 150-inch cinematic picture from inches away with built-in smart apps.','Brightness: 2,200 lumens|Resolution: 4K UHD|Throw: Ultra-short|Smart TV: Built-in apps'],
+['e11','Nimbus Smart Thermostat','Electronics',179,'thermostat','Learns your schedule and can cut heating bills by up to 23% a year.','Savings: Up to 23%|Compatibility: 24V HVAC|Connectivity: Wi-Fi + app|Display: Frosted LCD'],
+['e12','Aurora ANC Wireless Earbuds','Electronics',199,'earbuds','Hybrid active noise cancelling with 36 hours of battery life.','ANC: Hybrid 45dB|Battery: 8h + 28h case|Bluetooth: 5.3 multipoint|Rating: IPX5',{badge:'Almost gone'}],
+['e13','FlexFold Aluminum Phone Stand','Electronics',14.99,'phone','An adjustable aluminum stand that folds flat for travel.','Material: Anodized aluminum|Adjustment: 2 hinges|Compatibility: 4-13 inch devices'],
+['e14','TangleFree Braided USB-C Cables 3-Pack','Electronics',12.99,'cable','Braided nylon cables with 100W fast charging in 3 lengths.','Lengths: 3ft / 6ft / 10ft|Power: 100W PD|Build: Braided nylon'],
+['e15','ClearGuard Shockproof Phone Case','Electronics',12.99,'phonecase','Military-grade drop protection in a crystal-clear frame.','Protection: 10ft drop tested|Material: TPU + PC|Compatible: Wireless charging'],
+['e16','ScreenShield Tempered Glass 2-Pack','Electronics',8.99,'screenprotector','9H tempered glass with an oleophobic anti-fingerprint coating.','Hardness: 9H|Coating: Oleophobic|Includes: 2 protectors + kit'],
+/* ---- Audio ---- */
+['a1','Aurora Pro Over-Ear Headphones','Audio',299,'headphones','Reference-grade sound with adaptive ANC and 60-hour battery life.','Drivers: 40mm hi-res|ANC: Adaptive 4-mic|Battery: 60 hours|Build: Aluminum + memory foam',{badge:'Top rated'}],
+['a2','BassLine 5.1 Soundbar System','Audio',329,'soundbar','A 5.1-channel system with wireless subwoofer and Dolby Atmos support.','Channels: 5.1 + sub|Power: 540W total|Atmos: Supported|Subwoofer: Wireless 6.5-inch'],
+['a3','Vinyl Retro Bluetooth Turntable','Audio',249,'turntable','A belt-driven turntable with built-in speakers and Bluetooth streaming.','Drive: Belt-driven|Speeds: 33 and 45 RPM|Speakers: 2x 10W built-in|Streaming: Bluetooth 5.0'],
+['a4','StudioMax Bookshelf Speakers (Pair)','Audio',349,'speaker','Hand-finished wooden cabinets with silk-dome tweeters.','Drivers: 5.25-inch woofer + 1-inch tweeter|Power: 20-120W per pair|Impedance: 6 ohm|Finish: Real wood veneer'],
+['a5','VoiceOne Studio Microphone','Audio',179,'microphone','Broadcast-quality condenser with zero-latency monitoring and a shock mount.','Type: Cardioid condenser|Sample rate: 24-bit / 96kHz|Monitoring: 3.5mm zero-latency|Includes: Shock mount + boom arm'],
+/* ---- Computers ---- */
+['c1','Titan 15 Gaming Laptop RTX 4070','Computers',1799,'laptop','RTX 4070 graphics, a 240Hz QHD display, and a vapor-chamber cooled i9 processor.','CPU: Intel i9-13980HX|GPU: RTX 4070 8GB|Display: 15.6-inch QHD 240Hz|Memory: 32GB DDR5 + 1TB NVMe',{badge:'Flash deal',wide:true,claimed:64,left:4}],
+['c2','UltraView 27-Inch 4K Monitor','Computers',379,'monitor','A 4K IPS panel with 98% DCI-P3 color and USB-C single-cable docking.','Resolution: 3840x2160 IPS|Color: 98% DCI-P3|Ports: USB-C 90W, HDMI, DP|Stand: Height + pivot'],
+['c3','ClickWave Mechanical Keyboard','Computers',159,'keyboard','Hot-swappable gasket-mount switches with per-key RGB and tri-mode wireless.','Switches: Hot-swap linear|Layout: 75% compact|Connectivity: USB-C / BT / 2.4G|Battery: 4,000mAh'],
+['c4','Glide Ergonomic Wireless Mouse','Computers',79,'mouse','A sculpted ergonomic shape with silent clicks and 70 days of battery life.','Sensor: 8,000 DPI|Battery: 70 days|Silent clicks: 92% quieter|Design: Right-handed'],
+['c5','Forge Creator 3D Printer','Computers',599,'printer','Auto-bed-leveling FDM printer with a large enclosed build volume.','Build volume: 300x300x300mm|Speed: Up to 250mm/s|Leveling: Fully automatic|Filament: PLA / PETG / TPU'],
+['c6','Vault 2TB Portable SSD','Computers',189,'ssd','2TB of shockproof storage with 1,050MB/s transfers over USB-C.','Capacity: 2TB|Speed: 1,050MB/s read|Durability: 2m drop + IP55|Encryption: AES-256 hardware'],
+['c7','StreamCam 4K Webcam','Computers',129,'webcam','4K30 streaming with auto-framing, HDR, and dual noise-cancelling mics.','Video: 4K30 / 1080p60|Field of view: 90 degrees|Mics: Dual beamforming|Mount: Clip + tripod thread'],
+['c8','NexusLink 8-in-1 USB-C Hub','Computers',34.99,'usb','Turn one USB-C port into 8 connections with 100W passthrough charging.','Ports: HDMI, 3x USB 3.0, SD|Video: 4K 60Hz HDMI|Charging: 100W PD passthrough|Build: Aluminum shell'],
+/* ---- Cameras ---- */
+['m1','ProMirror 33MP Mirrorless Camera','Cameras',1299,'camera','A 33MP full-frame body with 8-stop in-body stabilization.','Sensor: 33MP full-frame|Stabilization: 8-stop IBIS|Video: 4K/60 10-bit|Burst: 30 fps',{badge:'Best seller'}],
+['m2','TeleZoom 70-200mm f/2.8 Lens','Cameras',1899,'lens','A weather-sealed 70-200mm f/2.8 with dual linear focus motors.','Aperture: f/2.8 constant|Focus: Dual linear motors|Sealing: Dust + splash'],
+['m3','ActionCam 5K Waterproof','Cameras',329,'actioncamera','A 5K action cam with horizon lock and 10-bit color.','Video: 5K/60|Stabilization: HorizonLock 2.0|Depth: 33 ft without case|Battery: 90+ minutes'],
+['m4','GlideSmooth 3-Axis Gimbal','Cameras',169,'gimbal','A foldable smartphone gimbal with active tracking.','Payload: 300 g|Battery: 10 hours|Modes: ActiveTrack 6.0'],
+['m5','StudioFlash 400Ws 2-Light Kit','Cameras',549,'photography','Two 400Ws strobes with softboxes, stands, and a wireless trigger.','Output: 400Ws x2|Recycle: 0.9 seconds|Includes: Softboxes + trigger'],
+['m6','Instant Retro Instant Camera','Cameras',99,'polaroid','An instant camera with a mirror selfie mode and 5 built-in filters.','Film: Instant square|Modes: Selfie mirror|Filters: 5 built-in'],
+['m7','TrailWatch 4K Wildlife Camera','Cameras',129,'trailcamera','A 4K trail camera with a 0.2s trigger and 6-month battery life.','Video: 4K/30|Trigger: 0.2 seconds|Night: 100 ft IR range|Battery: Up to 6 months'],
+['m8','SkySnap Starter DSLR Kit','Cameras',499,'camera','A 24MP DSLR kit with an 18-55mm lens and guided modes.','Sensor: 24MP APS-C|ISO: 100-25600|Kit: 18-55mm lens'],
+/* ---- Home & Kitchen ---- */
+['h1','BaristaPro Espresso Machine','Home & Kitchen',649,'espresso','A 15-bar pump with PID temperature control and a built-in conical burr grinder.','Pump: 15-bar Italian|Grinder: Conical burr, 30 settings|Boiler: PID dual thermoblock|Frothing: Steam wand',{badge:'Best seller'}],
+['h2','ChefLine Stand Mixer 6.5Qt','Home & Kitchen',399,'mixer','A 575W die-cast mixer with 10 speeds and a 6.5-quart stainless bowl.','Capacity: 6.5 Qt|Power: 575W|Attachments: Dough hook, whisk, beater|Speeds: 10 + pulse'],
+['h3','CrispAir XL 8Qt Air Fryer','Home & Kitchen',129,'airfryer','Family-sized dual-basket frying with 12 one-touch presets.','Capacity: 8 Qt dual basket|Presets: 12 one-touch|Range: 90-400 F|Cleanup: Dishwasher-safe baskets'],
+['h4','Cyclone Robot Vacuum & Mop','Home & Kitchen',429,'vacuum','LiDAR navigation with 5,000Pa suction, self-emptying base, and sonic mopping.','Suction: 5,000Pa|Navigation: LiDAR mapping|Base: 60-day self-empty|Mopping: Sonic pad + tank'],
+['h5','PureBreeze HEPA Air Purifier','Home & Kitchen',259,'purifier','True HEPA filtration for rooms up to 1,200 sq ft with real-time air readings.','Coverage: 1,200 sq ft|Filter: True HEPA H13|CADR: 350 m3/h|Noise: 24 dB sleep mode'],
+['h6','ChillZone 28-Bottle Wine Cooler','Home & Kitchen',399,'wine','Dual-zone compressor cooling with UV-protected glass and soft LED lighting.','Capacity: 28 bottles|Zones: Dual independent|Range: 40-66 F|Display: Digital touch'],
+['h7','BrewMaster 12-Cup Coffee Maker','Home & Kitchen',89,'coffee','Programmable brewing with a bloom cycle and a 4-hour thermal carafe.','Carafe: 12-cup thermal|Programmable: 24-hour timer|Brew: Bloom pre-infusion|Filter: Reusable gold'],
+['h8','VortexPro Blender 1500W','Home & Kitchen',139,'blender','1,500 watts of ice-crushing power with 6 hardened steel blades.','Power: 1,500W peak|Jar: 64oz BPA-free Tritan|Presets: 5 smart programs|Cleanup: Self-clean cycle'],
+['h9','LiftStand Electric Standing Desk','Home & Kitchen',299,'desk','A dual-motor sit-stand desk with memory presets and a bamboo top.','Top: 55 x 28 inch bamboo|Lift: Dual motor, 3-stage|Memory: 4 height presets|Range: 27-46 inches'],
+['h10','ErgoSit Mesh Office Chair','Home & Kitchen',459,'chair','Full-back mesh with 4D armrests and adjustable lumbar for all-day comfort.','Back: Breathable full mesh|Armrests: 4D adjustable|Lumbar: Height + depth|Capacity: Up to 330 lbs'],
+['h11','SootheLux Full-Body Massage Chair','Home & Kitchen',1899,'massage','4D rollers with body scanning, heat therapy, and zero-gravity recline.','Rollers: 4D quad-style|Programs: 12 auto + manual|Recline: Zero-gravity 2-stage|Heat: Lumbar + calves',{badge:'New'}],
+['h12','RapidBoil Electric Kettle 1.7L','Home & Kitchen',29.99,'kettle','Boils a full kettle in under 4 minutes with precise temperature control.','Capacity: 1.7L|Power: 1,500W|Presets: 6 temperatures|Safety: Auto shut-off'],
+/* ---- Fashion ---- */
+['f1','Meridian Automatic Dive Watch','Fashion',599,'watch','A Japanese automatic movement with sapphire crystal and 300m water resistance.','Movement: Automatic 24-jewel|Crystal: Sapphire AR-coated|Water: 300m dive-rated|Case: 316L steel 40mm'],
+['f2','Milano Full-Grain Leather Handbag','Fashion',349,'handbag','Hand-finished full-grain leather with brass hardware and a removable strap.','Leather: Full-grain Italian|Hardware: Solid brass|Strap: Adjustable + removable|Interior: Suede lining'],
+['f3','CloudStep Cushioned Running Shoes','Fashion',129,'sneakers','Responsive foam midsoles with a breathable knit upper for daily miles.','Midsole: Responsive supercritical foam|Upper: Engineered knit|Drop: 8mm|Weight: 8.4 oz'],
+['f4','Horizon Polarized Sunglasses','Fashion',89,'sunglasses','Polarized UV400 lenses in a lightweight TR90 frame with spring hinges.','Lens: Polarized UV400|Frame: TR90 flexible|Weight: 22 grams|Case: Hard shell included'],
+['f5','Voyage Hardside Luggage 3-Piece Set','Fashion',229,'luggage','A spinner set in scratch-resistant polycarbonate with TSA locks and USB ports.','Set: 20 + 24 + 28 inch|Shell: Polycarbonate|Locks: TSA-approved|Extras: USB charging port'],
+['f6','Noir Eau de Parfum 100ml','Fashion',79,'perfume','A warm amber-woody fragrance with bergamot top notes and 10-hour wear.','Volume: 100ml|Notes: Bergamot, amber, cedarwood|Longevity: 8-10 hours|Type: Eau de parfum'],
+['f7','Everyday Crew Tees 3-Pack','Fashion',19.99,'tshirt','Soft combed-cotton tees in three versatile colors that keep their shape.','Material: 100% combed cotton|Fit: Classic crew|Set: 3 colors|Care: Pre-shrunk, machine wash'],
+['f8','Everyday Crew Socks 8-Pack','Fashion',9.99,'socks','Breathable combed-cotton socks with a cushioned footbed in 8 pairs.','Material: Combed cotton|Pack: 8 pairs|Features: Cushioned footbed|Sizes: M / XL'],
+['f9','Sport Ankle Socks 12-Pack','Fashion',14.99,'socks','Moisture-wicking ankle socks with arch support in 12 pairs.','Material: Moisture-wicking blend|Pack: 12 pairs|Features: Arch support + mesh'],
+['f10','Wool Trail Hiking Socks 4-Pack','Fashion',19.99,'socks','Merino wool blend socks with seamless toes for boots and trails.','Material: 72% merino wool|Pack: 4 pairs|Features: Seamless toe|Best for: Boots, hiking'],
+['f11','Silk Dress Socks 3-Pack','Fashion',24.99,'socks','Thin, lustrous mulberry silk socks for formal wear.','Material: Mulberry silk|Pack: 3 pairs|Care: Hand wash cold'],
+['f12','Everyday Canvas Tote Bag','Fashion',9.99,'bag','A sturdy 16oz canvas tote with reinforced handles and an inner pocket.','Material: 16oz canvas|Capacity: 25L|Handles: Reinforced cross-stitch'],
+['f13','Merino Ribbed Beanie','Fashion',11.99,'beanie','A double-layer merino beanie that stays itch-free all day.','Material: 100% merino|Layers: Double-cuff|Fit: One size'],
+['f14','Classic Leather Belt','Fashion',19.99,'belt','Full-grain leather with a solid brass buckle in reversible black and brown.','Leather: Full-grain|Buckle: Solid brass reversible|Width: 35mm'],
+/* ---- Beauty ---- */
+['b1','GlowLab Radiance Skincare Set','Beauty',69,'cosmetics','A 5-step routine with vitamin C serum, hyaluronic moisturizer, and SPF 40.','Pieces: 5 full-size products|Key actives: Vitamin C + HA|Skin types: All, incl. sensitive|Free of: Parabens + sulfates'],
+['b2','SilkAir Ionic Hair Dryer','Beauty',189,'hairdryer','Ionic technology dries hair 40% faster with 3x less heat damage.','Power: 1,800W brushless|Ionic: Negative ion output|Heat: 3 levels + cool shot|Attachments: 2 magnetic nozzles'],
+['b3','SonicBright Electric Toothbrush','Beauty',99,'toothbrush','62,000 sonic movements per minute with pressure sensing and 5 modes.','Movements: 62,000/min|Modes: 5 + pressure sensor|Battery: 30 days per charge|Heads: 8 replacements included'],
+/* ---- Jewelry ---- */
+['j1','EternalCut 1.5ct Diamond Ring','Jewelry',8999,'diamond','A GIA-certified 1.5ct round solitaire in 18k white gold.','Stone: 1.5ct GIA round|Clarity: VS1|Metal: 18k white gold|Certification: GIA included',{badge:'Best seller'}],
+['j2','Lumiere 24k Cuban Link Chain','Jewelry',2499,'gold','A 55-gram solid 24k chain with a hidden box clasp.','Metal: Solid 24k gold|Weight: 55 grams|Clasp: Hidden box|Length: 20 inches'],
+['j3','PearlBloom Akoya Necklace','Jewelry',749,'pearl','An 18-inch strand of 7.5mm AAA Akoya pearls.','Pearls: AAA Akoya 7.5mm|Length: 18 inches|Clasp: 14k gold'],
+['j4','Radiance 3ct Tennis Bracelet','Jewelry',3999,'bracelet','Three carats of round brilliants in a flexible 18k setting.','Carats: 3.0 total|Setting: 18k white gold|Clasp: Double safety'],
+['j5','StarPair 1ct Diamond Studs','Jewelry',1999,'earrings','A matched pair of 0.5ct studs with screw-back posts.','Total: 1.0ct pair|Setting: 4-prong martini|Backs: Screw-back'],
+['j6','HeartPendant Sterling Silver','Jewelry',89,'pendant','A polished heart pendant on an 18-inch box chain.','Metal: 925 sterling|Chain: 18-inch box|Finish: Rhodium plated'],
+['j7','Heritage 14k Signet Ring','Jewelry',599,'ring','A hand-engraved oval signet ready for custom monograms.','Metal: 14k yellow gold|Face: 14 x 12 mm|Engraving: Optional'],
+['j8','Sapphire Halo Ring','Jewelry',4299,'sapphire','A 2.1ct Ceylon sapphire framed by half a carat of diamonds.','Center: 2.1ct Ceylon sapphire|Halo: 0.5ct diamonds|Metal: Platinum'],
+/* ---- Luxury ---- */
+['lx1','ChronoMaster Tourbillon Watch','Luxury',24999,'watch','A hand-finished flying tourbillon in a 42mm rose-gold case.','Movement: Hand-wound tourbillon|Case: 42mm rose gold|Power reserve: 72 hours|Water: 50m',{badge:'Top rated'}],
+['lx2','Atelier Full-Grain Leather Tote','Luxury',8900,'handbag','A structured tote hand-stitched from a single hide.','Leather: Single-hide full-grain|Hardware: Palladium|Stitch: Saddle-stitched by hand'],
+['lx3','Milano Cashmere Overcoat','Luxury',1499,'coat','A double-faced Italian cashmere overcoat with raglan sleeves.','Fabric: Double-faced cashmere|Fit: Raglan sleeve|Care: Dry clean'],
+['lx4','Heritage Silk Scarf','Luxury',389,'scarf','A hand-rolled 90cm silk twill scarf printed in 14 colors.','Size: 90 x 90 cm|Fabric: Silk twill|Finish: Hand-rolled hem'],
+['lx5','OudRoyal Extrait de Parfum','Luxury',499,'perfume','A 50ml pure oud extrait aged 12 years.','Volume: 50ml|Concentration: Extrait 30%|Notes: Oud, rose, saffron'],
+['lx6','Voyager Leather Weekender','Luxury',749,'duffel','A 45L waxed-canvas and leather duffel with brass feet.','Capacity: 45L|Body: Waxed canvas + leather|Base: Brass feet'],
+['lx7','Crystal Decanter Set','Luxury',349,'decanter','A lead-free decanter with six hand-blown glasses.','Set: Decanter + 6 glasses|Material: Lead-free crystal|Gift: Boxed'],
+['lx8','Platinum Fountain Pen','Luxury',1199,'pen','An 18k gold nib fountain pen with a platinum body.','Nib: 18k gold|Body: Platinum plate|Fill: Cartridge + piston'],
+['lx9','Cedar Humidor 100-Count','Luxury',599,'humidor','A Spanish-cedar humidor with a hygrometer and humidifier.','Capacity: 100|Lining: Spanish cedar|Includes: Hygrometer'],
+['lx10','Marble Bar Cart','Luxury',1099,'bar','A two-tier brass and carrara marble bar cart on casters.','Tiers: 2 marble|Frame: Solid brass|Wheels: Locking casters'],
+['lx11','Damascus Chef Knife Set','Luxury',2899,'knife','A 5-piece set with 33-layer Damascus blades and ebony handles.','Blades: 33-layer Damascus|Handles: Stabilized ebony|Hardness: 62 HRC'],
+['lx12','Horizon Original Canvas 48in','Luxury',3500,'art','A signed original abstract oil on gallery canvas.','Size: 48 x 36 inches|Medium: Oil on canvas|Authenticity: Signed COA'],
+/* ---- Fitness ---- */
+['g1','FlexDeck T600 Smart Treadmill','Fitness',899,'treadmill','A 3.5HP quiet motor with a 20x60-inch cushioned deck that folds for storage.','Motor: 3.5HP quiet-drive|Deck: 20 x 60 inch cushioned|Speed: 0.5-12 mph|Incline: 12 levels auto'],
+['g2','IronCore Adjustable Dumbbells 55lb','Fitness',349,'dumbbell','A full rack of weights in one pair — dial from 5 to 52.5 lbs in seconds.','Range: 5-52.5 lbs each|Increments: 2.5 lb steps|Mechanism: Twist-dial steel plates|Includes: Storage trays',{badge:'Top rated'}],
+['g3','RecoverPro Percussion Massage Gun','Fitness',149,'massage','A whisper-quiet brushless motor with 6 attachment heads and 8-hour battery.','Power: 3,200 percussions/min|Noise: 42 dB|Battery: 8 hours|Heads: 6 interchangeable'],
+['g4','ProFit Resistance Band Set 11-Pc','Fitness',16.99,'fitness','Eleven stackable bands up to 150 lbs of resistance with handles and anchors.','Resistance: 10-150 lbs stackable|Pieces: 11 + door anchor|Material: Natural latex|Includes: Carry bag + guide'],
+['g5','TrailForge Insulated Water Bottle','Fitness',24.99,'waterbottle','Keeps drinks cold 24 hours in a powder-coated steel body.','Capacity: 32 oz|Insulation: Cold 24h / hot 12h|Body: 18/8 steel'],
+/* ---- Sports ---- */
+['s1','AcePro Tennis Racquet','Sports',199,'tennis','A graphite-composite frame with a 100 sq-in head built for spin.','Head: 100 sq in|Weight: 10.6 oz|Balance: 4 pts head-light'],
+['s2','LinksPro 12-Club Golf Set','Sports',699,'golf','A full 12-club set with driver, woods, hybrids, and putter.','Clubs: 12 + stand bag|Flex: Regular|Includes: Driver to putter'],
+['s3','StrikeBall Pro Bowling Ball','Sports',149,'bowling','A reactive resin pearl with a custom-drilled fit.','Weight: 12-16 lbs|Cover: Reactive pearl|Finish: Polished'],
+['s4','StreetDeck Complete Skateboard','Sports',119,'skateboard','A 7-ply maple deck with 52mm wheels and precision trucks.','Deck: 7-ply maple 8.0|Wheels: 52mm 99a|Trucks: Cast 5.0'],
+['s5','PowderCarve All-Mountain Snowboard','Sports',429,'snowboard','A directional twin for all-mountain riding with a sintered base.','Shape: Directional twin|Base: Sintered 7500|Sizes: 148-162'],
+['s6','ClimbMax Harness Kit','Sports',129,'climbing','A certified harness with belay device, carabiner, and chalk bag.','Certified: UIAA / CE|Adjusts: XS-XL|Includes: Belay + chalk bag'],
+['s7','HydroSpeed Race Goggles','Sports',29,'swimming','Low-profile mirrored goggles with 4 nose-bridge sizes.','Lens: Mirrored anti-fog|Fit: 4 nose bridges|Rating: FINA approved'],
+['s8','PaddleGlide 11-Ft Inflatable SUP','Sports',649,'paddleboard','An inflatable touring SUP with pump, paddle, and leash.','Length: 11 ft|Capacity: 330 lbs|Includes: Pump, paddle, leash'],
+/* ---- Outdoor ---- */
+['o1','RideMax Electric Scooter','Outdoor',799,'scooter','A 500W motor, 25-mile range, and dual suspension for smooth city rides.','Motor: 500W hub|Range: 25 miles|Speed: 20 mph|Folds: One-click stem'],
+['o2','Glide City Cruiser E-Bike','Outdoor',1499,'bicycle','A 500W mid-drive e-bike with hydraulic disc brakes and a 60-mile range.','Motor: 500W mid-drive|Battery: 720Wh removable|Range: 60 miles|Brakes: Hydraulic disc',{badge:'New'}],
+['o3','SummitPro 60L Hiking Backpack','Outdoor',119,'backpack','A ventilated 60L pack with an adjustable torso and integrated rain cover.','Capacity: 60L + 10L expansion|Frame: Ventilated aluminum|Torso: Adjustable S-XL|Rain cover: Included'],
+['o4','Vista 10x42 Waterproof Binoculars','Outdoor',199,'binoculars','ED glass and fully multi-coated optics in a nitrogen-sealed body.','Magnification: 10x42|Prism: BAK4 ED glass|Coating: Fully multi-coated|Waterproof: Nitrogen-purged'],
+['o5','AstroStar 130EQ Telescope','Outdoor',299,'telescope','A 130mm reflector on a German equatorial mount for planetary and deep-sky views.','Aperture: 130mm reflector|Mount: German equatorial|Magnification: Up to 307x|Includes: 2 eyepieces + Barlow'],
+['o6','BaseCamp LED Camping Lantern','Outdoor',21.99,'camping','A rechargeable 1,000-lumen lantern with IPX5 water resistance and a USB power bank.','Brightness: 1,000 lumens|Battery: 6,000mAh rechargeable|Rating: IPX5 water resistant|Extras: USB power bank'],
+/* ---- Toys & Games ---- */
+['t1','BrickCity Space Lab 2,100-Piece Set','Toys & Games',89,'buildingblocks','A 2,100-piece modular space station for builders ages 8 and up.','Pieces: 2,100|Ages: 8+|Includes: 6 minifigures'],
+['t2','SpeedCircuit RC Car 1:10','Toys & Games',149,'rccar','A 40km/h brushless RC truck with waterproof electronics.','Speed: 40 km/h|Scale: 1:10|Drive: 4WD brushless|Battery: 2x LiPo'],
+['t3','PuzzleMaster 2000-Piece Puzzle','Toys & Games',29,'puzzle','A gallery-quality 2000-piece landscape puzzle.','Pieces: 2,000|Size: 38 x 26 inches|Finish: Matte anti-glare'],
+['t4','QuizNight Trivia Party Game','Toys & Games',34,'boardgame','1,200 questions across 6 categories for 3-8 players.','Questions: 1,200|Players: 3-8|Playtime: 45 minutes'],
+['t5','PlushBear 3-Foot Teddy Bear','Toys & Games',49,'teddybear','An extra-soft 36-inch teddy bear safe for all ages.','Height: 36 inches|Material: Hypoallergenic plush|Care: Machine washable',{badge:'Top rated'}],
+['t6','RaceLoop 12-Ft Glow Track Set','Toys & Games',59,'toycar','A 12-foot glow track with two turbo cars and a full loop.','Track: 12 ft + 360 loop|Includes: 2 cars|Ages: 4+'],
+['t7','MagTiles 120-Piece Magnetic Set','Toys & Games',65,'magnetictiles','STEM building tiles that click into towers, cars, and castles.','Pieces: 120|Material: ABS + magnets|Ages: 3+'],
+['t8','SkyKid Starter Drone','Toys & Games',79,'drone','A kid-friendly drone with altitude hold and full prop guards.','Camera: 720p|Flight time: 15 minutes|Safety: Full prop guards'],
+['t9','StratQuest Strategy Board Game','Toys & Games',44,'boardgame','A 60-minute strategy game of territory and trade for 2-5 players.','Players: 2-5|Playtime: 60 minutes|Ages: 10+'],
+['t10','WoodBlocks 500-Piece Set','Toys & Games',39,'woodblocks','FSC-certified wooden blocks in 12 shapes for open-ended play.','Pieces: 500|Material: FSC beechwood|Storage: Cotton bag'],
+/* ---- Garden & Tools ---- */
+['gd1','PowerDrill 20V Cordless Kit','Garden & Tools',129,'drill','A brushless 20V drill with 2 batteries and a 54-piece bit set.','Torque: 650 in-lbs|Batteries: 2x 2.0Ah|Includes: 54-piece kit'],
+['gd2','MowBot Robotic Lawn Mower','Garden & Tools',1199,'lawnmower','Boundary-wire-free mapping for lawns up to a quarter acre.','Coverage: 0.25 acre|Cut height: 0.8-2.8 inches|Navigation: RTK-GPS|App: Zone scheduling'],
+['gd3','GrillMaster 4-Burner Propane Grill','Garden & Tools',399,'grill','48,000 BTU across 4 burners with a side burner and warming rack.','BTU: 48,000 total|Cooking area: 513 sq in|Burners: 4 + side'],
+['gd4','HedgeTrim 24V Cordless Trimmer','Garden & Tools',99,'trimmer','A 22-inch laser-cut blade with 40 minutes of runtime.','Blade: 22-inch dual-action|Runtime: 40 minutes|Weight: 5.7 lbs'],
+['gd5','GreenGrow Cedar Raised Bed','Garden & Tools',89,'garden','A 4x8 ft untreated cedar bed that assembles in 15 minutes.','Size: 4 x 8 ft|Material: Untreated cedar|Assembly: Tool-free'],
+['gd6','EmberGlow 30-Inch Fire Pit','Garden & Tools',149,'firepit','A smoke-reducing steel fire pit with a weather cover.','Diameter: 30 inches|Airflow: Double-wall|Includes: Cover + poker'],
+['gd7','PatioGlow 9-Ft Offset Umbrella','Garden & Tools',119,'patio','A 9-foot cantilever umbrella with a cross base and crank tilt.','Span: 9 feet|Fabric: 240g solution-dyed|Tilt: 4-position crank'],
+['gd8','SolarFlow 400W Panel Kit','Garden & Tools',599,'solarpanel','A 400W mono kit with charge controller and MC4 cables.','Output: 400W|Cells: Monocrystalline|Efficiency: 22.8%'],
+['gd9','PressureJet 3200 PSI Washer','Garden & Tools',299,'pressurewasher','3200 PSI with 5 quick-connect nozzles and a turbo tip.','Pressure: 3200 PSI|Flow: 2.5 GPM|Nozzles: 5 quick-connect'],
+['gd10','AirSweep 20V Leaf Blower','Garden & Tools',79,'leafblower','A 620 CFM blower with cruise control at just 6.4 lbs.','Airflow: 620 CFM|Speed: 145 mph|Weight: 6.4 lbs'],
+/* ---- Grocery ---- */
+['gr1','RoastHouse Whole Bean Coffee 5lb','Grocery',49,'coffee','A medium-dark single-origin roast, fresh roasted weekly.','Origin: Colombia|Roast: Medium-dark|Weight: 5 lb whole bean'],
+['gr2','Wildflower Raw Honey 3-Pack','Grocery',24,'honey','Raw unfiltered honey from three single-flower sources.','Varietals: 3 single-flower|Processing: Raw unfiltered|Size: 3x 16 oz'],
+['gr3','Estate Olive Oil 1L','Grocery',32,'oliveoil','Cold-pressed extra virgin, harvested within 6 hours of picking.','Grade: Extra virgin|Acidity: 0.28%|Harvest: Single estate'],
+['gr4','Ceremonial Matcha 100g','Grocery',38,'matcha','First-harvest ceremonial matcha stone-ground in Uji.','Grade: Ceremonial|Origin: Uji, Japan|Weight: 100g'],
+['gr5','SnackVault Variety 40-Count','Grocery',29,'snacks','Forty individually wrapped sweet and salty snacks.','Count: 40|Portions: Individually wrapped'],
+['gr6','SpiceRack 24-Jar Collection','Grocery',42,'spices','24 organic spices in glass jars with a rotating stand.','Jars: 24 organic|Storage: Rotating stand|Refills: Available'],
+['gr7','PrimeCut Steak Box 12 Steaks','Grocery',189,'steak','Twelve dry-aged premium steaks, flash-frozen at peak freshness.','Count: 12 steaks|Cuts: Ribeye + filet + strip|Aging: 28 days dry-aged'],
+['gr8','Pure Whey Protein 5lb','Grocery',59,'protein','27g of grass-fed whey per scoop with no added sugar.','Protein: 27g per scoop|Source: Grass-fed whey|Servings: 73'],
+/* ---- Pets ---- */
+['p1','FeedRight Smart Pet Feeder','Pets',79,'pet','Schedule up to 12 meals a day with portion control and backup battery.','Capacity: 6 lbs kibble|Meals: Up to 12 daily|Power: AC + battery backup|Cleanup: Dishwasher-safe bowl'],
+['p2','PurrPal Multi-Level Cat Tree','Pets',159,'cat','A 68-inch tower with sisal posts, plush condos, and a sturdy anti-tip base.','Height: 68 inches|Levels: 5 platforms|Posts: Natural sisal|Base: Anti-tip design'],
+['p3','DreamNest Orthopedic Dog Bed','Pets',99,'dog','Certified orthopedic foam with a waterproof liner and washable cover.','Foam: 4-inch orthopedic certified|Sizes: M-XXL|Liner: Waterproof|Cover: Machine washable'],
+['p4','TrackPet GPS Collar Tracker','Pets',129,'collar','Live location tracking with escape alerts and 10-day battery life.','Battery: 10 days|Coverage: Nationwide LTE-M|Alerts: Escape radius geofence|Waterproof: IP67'],
+['p5','Tilted Cat Bowl Non-Slip','Pets',11.99,'bowl','An elevated 15-degree tilt that supports healthier digestion.','Angle: 15-degree elevated|Material: Food-grade ceramic|Base: Non-slip silicone'],
+/* ---- Vehicles ---- */
+['v1','UrbanEV City Hatchback','Vehicles',28999,'car','A 250-mile EV with 30-minute DC fast charging and a heat pump.','Range: 250 miles EPA|Charge: 10-80% in 30 min|Power: 184 hp|Seats: 5'],
+['v2','Vantage GT 510HP Coupe','Vehicles',89999,'sportscar','A twin-turbo V8 GT with carbon-ceramic brakes and launch control.','Engine: 4.0L twin-turbo V8|Power: 510 hp|0-60 mph: 3.6 seconds|Top speed: 198 mph',{badge:'Flash deal',wide:true,claimed:58,left:3}],
+['v3','RidgeLine 4x4 Crew Pickup','Vehicles',52999,'truck','A crew-cab 4x4 with a 12,000-lb tow rating and locking rear diff.','Towing: 12,000 lbs|Cab: Crew cab|Bed: 6.5 ft|Drivetrain: 4WD'],
+['v4','Cabriolet 4-Seat Convertible','Vehicles',74499,'convertible','A power soft-top convertible with neck-level heating.','Top: 14-second power|Seats: 4|Engine: 3.0L inline-6'],
+['v5','Voyager 8-Seat Family Van','Vehicles',39999,'van','An 8-seat van with captain chairs and a rear entertainment pack.','Seats: 8|Doors: Power sliding x2|Towing: 3,600 lbs'],
+['v6','Vulcan 900 Cruiser Motorcycle','Vehicles',18999,'motorcycle','A 900cc cruiser with cruise control and hard saddlebags.','Engine: 900cc V-twin|Seat: 28.9 inches|Bags: 20L hard cases'],
+['v7','ApexRR 1000 Sportbike','Vehicles',16999,'motorcycle','A liter-class superbike with quickshifter and cornering ABS.','Engine: 999cc inline-4|Power: 205 hp|Aids: Cornering ABS + TC'],
+['v8','DirtKing MX450 Motocross Bike','Vehicles',9499,'dirtbike','A race-ready 450cc MX bike with map switch and launch control.','Engine: 450cc single|Suspension: Fully adjustable|Weight: 234 lbs'],
+['v9','TrailQuad 700 ATV','Vehicles',8299,'atv','A 700cc ATV with electric power steering and a 1,050-lb tow rating.','Engine: 700cc single|Steering: Electric power|Towing: 1,050 lbs'],
+['v10','HydroJet 310HP Jet Ski','Vehicles',13999,'jetski','A 3-seat personal watercraft with intelligent brake and reverse.','Engine: 310 hp supercharged|Seats: 3|Storage: 27.5 gallons'],
+['v11','Summit 900 Snowmobile','Vehicles',12499,'snowmobile','A 165hp mountain sled with a 154-inch track.','Engine: 850cc two-stroke|Track: 154 x 2.5 inch|Suspension: KYB'],
+['v12','Fairway Lithium Golf Cart','Vehicles',7999,'golfcart','A street-legal lithium cart with a 50-mile range and bluetooth audio.','Range: 50 miles|Batteries: Lithium|Seats: 4|Audio: Bluetooth'],
+['v13','Angler 180 Fishing Boat','Vehicles',18999,'boat','An 18-foot aluminum fishing boat with trolling motor and GPS graph.','Length: 18 ft|Motor: 115hp + trolling|Electronics: GPS graph'],
+['v14','SunDeck 24 Tri-Toon Pontoon','Vehicles',34999,'pontoon','A 24-foot tritoon with a 250hp outboard and bimini top.','Length: 24 ft|Power: 250hp outboard|Deck: Dual loungers'],
+['v15','SailAway 42 Sailing Yacht','Vehicles',389000,'yacht','A 42-foot bluewater cruiser with 3 cabins and in-mast furling.','LOA: 42 ft|Cabins: 3 + 2 heads|Engine: 55hp diesel|Draft: 5.9 ft',{wide:true,claimed:71,left:2}],
+['v16','SunSeeker 68 Motor Yacht','Vehicles',1250000,'yacht','A 68-foot flybridge yacht with 4 staterooms and gyro stabilizers.','LOA: 68 ft|Staterooms: 4|Engines: Twin 1,200hp|Cruise: 24 knots',{badge:'Flash deal'}],
+['v17','Oceanis 120 Mega Yacht','Vehicles',9750000,'yacht','A 120-foot tri-deck yacht with a 5,000nm range and crew quarters.','LOA: 120 ft|Decks: 3|Range: 5,000 nm|Berths: 12 guests'],
+['v18','Skyhawk Very Light Jet','Vehicles',4200000,'jet','A 6-seat twinjet with a 1,200nm range at 41,000 ft.','Seats: 6 + 1|Cruise: 380 knots|Ceiling: 41,000 ft|Range: 1,200 nm',{badge:'New'}],
+['v19','AeroLux Executive Helicopter','Vehicles',1650000,'helicopter','A 6-seat turbine helicopter with dual controls and float gear.','Engine: Twin turbine|Seats: 6|Cruise: 150 knots|Controls: Dual'],
+/* ---- Real Estate ---- */
+['r1','Lakeside Cabin 3BR','Real Estate',249000,'cabin','A 3-bed lakefront cabin with a stone hearth and private dock.','Bedrooms: 3|Baths: 2|Interior: 1,850 sq ft|Lot: 1.2 acres'],
+['r2','Maple Grove 4BR Family House','Real Estate',485000,'house','A renovated 4-bed colonial in a top school district.','Bedrooms: 4|Baths: 2.5|Interior: 2,700 sq ft|Lot: 0.4 acres'],
+['r3','Coral Bay Beachfront Villa','Real Estate',1850000,'villa','A 5-bed oceanfront villa with an infinity pool.','Bedrooms: 5|Baths: 5.5|Interior: 4,900 sq ft|Frontage: 80 ft',{badge:'Prime location'}],
+['r4','Skyline Penthouse','Real Estate',2400000,'penthouse','A full-floor penthouse with 360-degree city views.','Bedrooms: 3|Baths: 3.5|Interior: 3,600 sq ft|Features: Private elevator'],
+['r5','Horizon Modern Mansion','Real Estate',4950000,'mansion','A 7-bed architectural estate with a pool and guest house.','Bedrooms: 7|Baths: 9|Interior: 11,200 sq ft|Extras: Pool + guest house',{badge:'New'}],
+['r6','Alpine A-Frame Retreat','Real Estate',189000,'cabin','A restored A-frame minutes from the ski lift.','Bedrooms: 2|Baths: 1|Interior: 1,100 sq ft|Renovated: 2023'],
+['r7','Downtown Studio Condo','Real Estate',135000,'apartment','A light-filled corner studio with deeded parking.','Rooms: Studio + alcove|Baths: 1|Interior: 540 sq ft|HOA: $280/mo'],
+['r8','Farmhouse on 10 Acres','Real Estate',395000,'farmhouse','A 1908 farmhouse with barn, pasture, and a spring-fed pond.','Bedrooms: 4|Baths: 2|Interior: 2,400 sq ft|Land: 10 acres'],
+['r9','Alpine Ski Chalet','Real Estate',1150000,'chalet','A ski-in/ski-out timber chalet with a hot tub deck.','Bedrooms: 5|Baths: 4|Interior: 3,800 sq ft|Access: Ski-in/ski-out'],
+['r10','Dockside Houseboat','Real Estate',199000,'houseboat','A 62-foot houseboat with a sundeck and pilot house.','Length: 62 ft|Bedrooms: 3|Baths: 2|Slip: Transferable'],
+['r11','Isla Serena Private Island','Real Estate',12500000,'island','A 14-acre private island with a deep-water dock and airstrip.','Area: 14 acres|Dock: Deep-water|Airstrip: 2,400 ft|Villa: 6-bed included',{badge:'Once in a lifetime'}],
+];
+
+/* deterministic was-price / rating / reviews / image-lock */
+function wasPrice(price, h){
+  const f = 1.16 + (h % 16) / 100;
+  let w = price * f;
+  if(price >= 100000) w = Math.round(w/5000)*5000;
+  else if(price >= 10000) w = Math.round(w/1000)*1000;
+  else if(price >= 100) w = Math.round(w/10)*10 - 0.01;
+  else w = Math.round(w) - 0.01;
+  if(w <= price) w = price >= 100 ? price + 9.99 : price + 1;
+  return w;
+}
+function reviewsFor(price, h){
+  if(price >= 100000) return 6 + h % 42;
+  if(price >= 10000) return 14 + h % 96;
+  if(price >= 1000) return 48 + h % 700;
+  return 120 + h % 9500;
+}
+function parseSpecs(s){
+  if(!s) return [];
+  return s.split('|').map(x => { const i = x.indexOf(':'); return [x.slice(0,i).trim(), x.slice(i+1).trim()]; });
+}
+const hash = s => { let h = 7; for(let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) >>> 0; return h; };
+const PRODUCTS = RAW.map(([id,name,cat,price,kw,blurb,specs,opts]) => {
+  const h = hash(id);
+  return {
+    id, name, cat, price, kw, blurb,
+    seed: 'sp-' + id,
+    was: wasPrice(price, h),
+    rating: Math.min(4.9, 3.7 + ((h >>> 3) % 13) / 10),
+    reviews: reviewsFor(price, h),
+    lock: (h % 977) + 11,
+    specs: parseSpecs(specs),
+    ...(opts || {})
+  };
+});
+const byId = id => PRODUCTS.find(p => p.id === id);
+
+/* product images: custom IMAGES map first, then keyword photos, then fallback */
+const imgSrc = (p,s=440) => {
+  if(IMAGES[p.id]) return IMAGES[p.id];
+  return IMAGE_KEYWORDS
+    ? `https://loremflickr.com/${s}/${s}/${p.kw}?lock=${p.lock}`
+    : imgFB(p,s);
+};
+const imgFB  = (p,s=440) => `https://picsum.photos/seed/${p.seed}/${s}/${s}.jpg`;
+const imgTag = (p,s=440) => `<img loading="lazy" src="${imgSrc(p,s)}" onerror="this.onerror=null;this.src='${imgFB(p,s)}'" alt="${p.name}"/>`;
+const shipText = p => p.price >= 50000 ? 'White-glove delivery included'
+  : p.price >= 1000 ? 'Insured freight shipping' : 'Free shipping over $35';
+
+/* ============ helpers ============ */
+const el = id => document.getElementById(id);
+const icons = () => window.lucide && lucide.createIcons();
+const money = n => n >= 10000
+  ? '$' + Math.round(n).toLocaleString('en-US')
+  : '$' + n.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
+const rnd = (a,b) => Math.floor(a + Math.random()*(b-a+1));
+const pad = v => String(v).padStart(2,'0');
+const fmtDate = d => d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+/* storage with graceful fallback */
+const mem = {};
+const store = {
+  get(k){ try{ return localStorage.getItem(k) }catch(e){ return (k in mem) ? mem[k] : null } },
+  set(k,v){ try{ localStorage.setItem(k,v) }catch(e){ mem[k]=v } }
+};
+const sess = {
+  get(k){ try{ return sessionStorage.getItem(k) }catch(e){ return null } },
+  set(k,v){ try{ sessionStorage.setItem(k,v) }catch(e){} }
+};
+
+/* ============ settings ============ */
+const DEFAULTS = { limitOn:false, limitAmt:2500, authOn:true, authAmt:500, holdOn:true, holdAmt:50000, via:'email' };
+let settings = { ...DEFAULTS };
+function loadSettings(){
+  try{ const s = JSON.parse(store.get('sp_settings')); if(s && typeof s === 'object') settings = { ...DEFAULTS, ...s }; }catch(e){}
+}
+function saveSettings(){ store.set('sp_settings', JSON.stringify(settings)); }
+
+/* ============ state ============ */
+const state = {
+  cart:{}, coupon:null, wheelCoupon:null, favs:new Set(),
+  q:'', cat:'All', sort:'pop', shipping:null, fbEmail:null, spinUsed:false,
+  payMethod:'paypal', card:null, express:false, ppMode:'paypal'
+};
+function loadState(){
+  try{ state.cart = JSON.parse(store.get('sp_cart')) || {} }catch(e){ state.cart = {} }
+  try{ state.coupon = JSON.parse(store.get('sp_coupon')) }catch(e){ state.coupon = null }
+  try{ state.wheelCoupon = JSON.parse(store.get('sp_wheel')) }catch(e){ state.wheelCoupon = null }
+  try{ state.favs = new Set(JSON.parse(store.get('sp_favs')) || []) }catch(e){}
+  state.spinUsed = store.get('sp_spin') === '1';
+}
+function saveState(){
+  store.set('sp_cart', JSON.stringify(state.cart));
+  store.set('sp_coupon', JSON.stringify(state.coupon));
+  store.set('sp_wheel', JSON.stringify(state.wheelCoupon));
+  store.set('sp_favs', JSON.stringify([...state.favs]));
+  store.set('sp_spin', state.spinUsed ? '1' : '0');
+}
+
+/* purchase-gate helpers (reasons are NEVER shown to the buyer) */
+const overLimit = () => settings.limitOn && totals().total > settings.limitAmt;
+const needsOTP  = () => settings.authOn  && totals().total >= settings.authAmt;
+const needsHold = () => settings.holdOn  && totals().total >= settings.holdAmt;
+const hasBigItem = () => Object.keys(state.cart).some(id => { const p = byId(id); return p && p.price >= 1000; });
+
+/* ============ toasts ============ */
+function toast(title, sub, icon='check'){
+  const box = el('toasts');
+  if(box.children.length > 4) box.firstChild.remove();
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span class="tic"><i data-lucide="${icon}"></i></span><div><b>${title}</b><span>${sub}</span></div>`;
+  box.appendChild(t); icons();
+  setTimeout(()=>{ t.classList.add('out'); setTimeout(()=>t.remove(), 320); }, 2800);
+}
+
+/* ============ clipboard ============ */
+function copyText(txt, sub){
+  const ok = () => toast('Copied', sub || `“${txt}” copied to clipboard.`, 'copy');
+  const fail = () => toast('Copy unavailable', 'Your browser blocked clipboard access.', 'x');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(ok).catch(fail);
+  } else fail();
+}
+
+/* ============ stars ============ */
+function starsFor(p){
+  let h = '';
+  for(let i=0;i<5;i++) h += `<svg class="st ${i < Math.round(p.rating) ? 'f':''}" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`;
+  return `<span class="stars">${h}<span class="rnum">${p.rating.toFixed(1)} (${p.reviews.toLocaleString()})</span></span>`;
+}
+
+/* ============ product grid ============ */
+function cardHTML(p){
+  const off = Math.round((1 - p.price/p.was)*100);
+  const fav = state.favs.has(p.id);
+  const claim = p.wide ? `<div class="claim"><div class="claim-t"><span>${p.claimed}% claimed</span><span>${p.left} left</span></div><div class="claim-bar"><i style="width:${p.claimed}%"></i></div></div>` : '';
+  return `<article class="card ${p.wide?'wide':''}" data-id="${p.id}">
+    <div class="imgw">${imgTag(p)}
+      ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+      <button class="fav ${fav?'on':''}" data-id="${p.id}" type="button" aria-label="Save for later"><i data-lucide="heart"></i></button>
+    </div>
+    <div class="cbody">
+      <h3 class="pname">${p.name}</h3>
+      ${p.wide ? `<p class="wblurb">${p.blurb}</p>` : ''}
+      ${starsFor(p)}
+      <div class="prow"><span class="price">${money(p.price)}</span><span class="was">${money(p.was)}</span><span class="off">−${off}%</span></div>
+      ${claim}
+      <span class="shipmini"><i data-lucide="truck"></i>${shipText(p)}</span>
+      <button class="addbtn" data-id="${p.id}" type="button"><i data-lucide="plus"></i>Add to cart</button>
+    </div>
+  </article>`;
+}
+function currentList(){
+  const q = state.q;
+  let l = PRODUCTS.filter(p => (state.cat==='All' || p.cat===state.cat) &&
+    (!q || p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
+  switch(state.sort){
+    case 'price-asc':  l.sort((a,b)=>a.price-b.price); break;
+    case 'price-desc': l.sort((a,b)=>b.price-a.price); break;
+    case 'rating':     l.sort((a,b)=>b.rating-a.rating); break;
+    default:           l.sort((a,b)=>(b.reviews + (b.badge?8000:0)) - (a.reviews + (a.badge?8000:0)));
+  }
+  return l;
+}
+function renderGrid(){
+  const l = currentList();
+  el('grid').innerHTML = l.length ? l.map(cardHTML).join('') : `
+    <div class="empty">
+      <i data-lucide="package-search"></i>
+      <h3>No results for “${state.q}”</h3>
+      <p>Try a different keyword or browse our categories.</p>
+      <button class="reset" type="button">Clear search &amp; filters</button>
+    </div>`;
+  el('cnt').textContent = `${l.length} product${l.length===1?'':'s'}`;
+  icons();
+}
+el('grid').addEventListener('click', e=>{
+  const add = e.target.closest('.addbtn');
+  if(add){ addToCart(add.dataset.id, 1); return; }
+  const fav = e.target.closest('.fav');
+  if(fav){
+    const id = fav.dataset.id;
+    if(state.favs.has(id)){ state.favs.delete(id); fav.classList.remove('on'); toast('Removed from wishlist','Saved for another time.','heart'); }
+    else { state.favs.add(id); fav.classList.add('on'); toast('Saved to wishlist','Find it any time in your saved items.','heart'); }
+    saveState(); return;
+  }
+  if(e.target.closest('.reset')){ state.q=''; state.cat='All'; el('searchIn').value=''; el('searchClr').style.display='none'; updateCats(); renderGrid(); return; }
+  const card = e.target.closest('.card');
+  if(card) openQV(card.dataset.id);
+});
+function updateCats(){
+  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.cat===state.cat));
+}
+el('catRow').addEventListener('click', e=>{
+  const b = e.target.closest('.cat'); if(!b) return;
+  state.cat = b.dataset.cat; updateCats(); renderGrid();
+});
+el('sortSel').addEventListener('change', e=>{ state.sort = e.target.value; renderGrid(); });
+
+/* search */
+let deb;
+el('searchIn').addEventListener('input', e=>{
+  clearTimeout(deb);
+  deb = setTimeout(()=>{
+    state.q = e.target.value.trim().toLowerCase();
+    el('searchClr').style.display = state.q ? 'grid' : 'none';
+    renderGrid();
+  },160);
+});
+el('searchClr').addEventListener('click', ()=>{
+  el('searchIn').value=''; state.q=''; el('searchClr').style.display='none'; renderGrid();
+});
+el('searchGo').addEventListener('click', ()=>{ renderGrid(); el('searchIn').blur(); });
+el('searchIn').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); renderGrid(); el('searchIn').blur(); } });
+
+/* ============ cart ============ */
+function totals(){
+  let sub=0, n=0;
+  for(const id in state.cart){ const p=byId(id); if(!p) continue; sub += p.price*state.cart[id]; n += state.cart[id]; }
+  sub = Math.round(sub*100)/100;
+  let disc=0, ship;
+  if(n===0) ship = 0;
+  else if(hasBigItem()) ship = 0;               /* insured freight included */
+  else if(state.express) ship = 9.99;
+  else ship = sub>=35 ? 0 : 4.99;
+  const c = state.coupon;
+  if(c){
+    if(c.type==='percent') disc = sub*c.v/100;
+    else if(c.type==='fixed') disc = Math.min(c.v, sub);
+    else if(c.type==='ship' && !state.express && !hasBigItem()) ship = 0;
+  }
+  disc = Math.round(Math.min(disc, sub)*100)/100;
+  ship = Math.round(ship*100)/100;
+  const tax = Math.round((sub-disc)*0.08*100)/100;
+  const total = Math.round((sub - disc + ship + tax)*100)/100;
+  return {sub, disc, ship, tax, total, n};
+}
+function addToCart(id, qty=1){
+  state.cart[id] = (state.cart[id]||0) + qty;
+  saveState(); renderCart();
+  const b = el('cartBadge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+  toast('Added to cart', byId(id).name, 'check');
+}
+function changeQty(id, q){
+  if(q<=0) delete state.cart[id]; else state.cart[id]=q;
+  saveState(); renderCart(); renderDelivery();
+}
+function removeItem(id){
+  delete state.cart[id]; saveState(); renderCart(); renderDelivery();
+  toast('Removed from cart', byId(id).name, 'trash-2');
+}
+function dItemHTML(p, q){
+  return `<div class="ditem">
+    ${imgTag(p,96)}
+    <div class="dimid">
+      <div class="n">${p.name}</div>
+      <div class="u">${money(p.price)} each</div>
+      <span class="stepsm">
+        <button data-act="minus" data-id="${p.id}" type="button" aria-label="Decrease"><i data-lucide="minus"></i></button>
+        <span class="qc">${q}</span>
+        <button data-act="plus" data-id="${p.id}" type="button" aria-label="Increase"><i data-lucide="plus"></i></button>
+      </span>
+    </div>
+    <div class="diright">
+      <span class="lt">${money(p.price*q)}</span>
+      <button class="rm" data-act="rm" data-id="${p.id}" type="button" aria-label="Remove"><i data-lucide="trash-2"></i></button>
+    </div>
+  </div>`;
+}
+function renderCart(){
+  const entries = Object.entries(state.cart).map(([id,q])=>[byId(id),q]).filter(([p])=>p);
+  const count = entries.reduce((s,[,q])=>s+q,0);
+  const badge = el('cartBadge');
+  badge.textContent = count; badge.style.display = count ? 'grid' : 'none';
+  el('dCount').textContent = count ? `(${count})` : '';
+  const box = el('dItems'), st = box.scrollTop;
+  box.innerHTML = entries.length ? entries.map(([p,q])=>dItemHTML(p,q)).join('') : `
+    <div class="dempty">
+      <i data-lucide="package-open"></i>
+      <p>Your cart is empty.<br>Explore our catalog to find something you love.</p>
+      <button data-act="browse" type="button">Start shopping</button>
+    </div>`;
+  box.scrollTop = st;
+  renderPromoAreas(); renderMoney(); icons();
+}
+el('dItems').addEventListener('click', e=>{
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const {act, id} = b.dataset;
+  if(act==='plus') changeQty(id, state.cart[id]+1);
+  else if(act==='minus') state.cart[id]<=1 ? removeItem(id) : changeQty(id, state.cart[id]-1);
+  else if(act==='rm') removeItem(id);
+  else if(act==='browse') closeDrawer();
+});
+
+/* ============ money / totals UI ============ */
+function totHTML(t){
+  const shipLabel = t.n===0 ? 'Shipping'
+    : hasBigItem() ? 'Insured freight'
+    : state.express ? 'Express shipping' : 'Shipping';
+  return `
+    <div class="trow"><span>Subtotal (${t.n} item${t.n===1?'':'s'})</span><span>${money(t.sub)}</span></div>
+    <div class="trow"><span>${shipLabel}</span><span class="${t.ship===0?'free':''}">${t.n===0?'—':(t.ship===0?'FREE':money(t.ship))}</span></div>
+    ${t.disc>0 ? `<div class="trow"><span>Coupon (${state.coupon.code})</span><span class="disc">−${money(t.disc)}</span></div>`:''}
+    <div class="trow"><span>Tax (8%)</span><span>${money(t.tax)}</span></div>
+    <div class="trow b"><span>Total</span><span>${money(t.total)}</span></div>`;
+}
+function renderMoney(){
+  const t = totals();
+  const pct = Math.min(t.sub/35, 1);
+  el('dShipFill').style.width = (pct*100)+'%';
+  el('dShipTruck').style.left = (pct*100)+'%';
+  el('dShipMsg').innerHTML = t.n===0
+    ? `Free shipping on orders over <b>$35</b>`
+    : (t.sub < 35 && !hasBigItem()
+      ? `You are <b>${money(35 - t.sub)}</b> away from <b>free shipping</b>`
+      : `<b>Free shipping</b> unlocked on this order`);
+  el('dTots').innerHTML = totHTML(t);
+  el('sumTots').innerHTML = totHTML(t);
+  const btn = el('coBtn');
+  btn.textContent = `Checkout · ${money(t.total)}`;
+  btn.disabled = t.n===0;
+  el('payAmt').textContent = money(t.total);
+  el('fbAmount').textContent = money(t.total);
+}
+
+/* ============ coupons ============ */
+const couponDesc = c => c.type==='ship' ? 'Free shipping' : (c.type==='percent' ? c.v+'% off' : '$'+c.v+' off');
+function tryCoupon(code){
+  code = code.trim().toUpperCase();
+  if(!code) return {ok:false, msg:'Enter a code to apply.'};
+  if(state.coupon && state.coupon.code===code) return {ok:false, msg:'This code is already applied.'};
+  if(code==='SAVE5'){
+    if(totals().sub < 25) return {ok:false, msg:'SAVE5 requires a subtotal of $25 or more.'};
+    return {ok:true, c:{code:'SAVE5', type:'fixed', v:5}};
+  }
+  if(code==='FREESHIP') return {ok:true, c:{code:'FREESHIP', type:'ship', v:0}};
+  if(/^SPIN-/.test(code)){
+    if(state.wheelCoupon && state.wheelCoupon.code===code) return {ok:true, c:state.wheelCoupon};
+    return {ok:false, msg:'Invalid coupon code.'};
+  }
+  return {ok:false, msg:'Invalid coupon code.'};
+}
+function promoHTML(){
+  if(state.coupon){
+    return `<div class="cchip"><i data-lucide="tag"></i><span>${state.coupon.code}</span><em>${couponDesc(state.coupon)}</em>
+      <button class="prmv" type="button" aria-label="Remove coupon"><i data-lucide="x"></i></button></div>`;
+  }
+  return `<div class="promo"><input class="pin" placeholder="Promo code" spellcheck="false" autocomplete="off"/><button class="pbtn" type="button">Apply</button></div><div class="perr"></div>`;
+}
+function renderPromoAreas(){
+  document.querySelectorAll('.promo-area').forEach(w=>{
+    w.innerHTML = promoHTML();
+    const inp = w.querySelector('.pin'), btn = w.querySelector('.pbtn'), err = w.querySelector('.perr');
+    if(btn){
+      const go = ()=>{
+        const r = tryCoupon(inp.value);
+        if(!r.ok){ err.textContent = r.msg; err.style.display='block'; inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
+        state.coupon = r.c; saveState(); renderPromoAreas(); renderMoney();
+        toast('Coupon applied', `${r.c.code} — ${couponDesc(r.c)} your order.`, 'tag');
+      };
+      btn.addEventListener('click', go);
+      inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); go(); } });
+    }
+    const rm = w.querySelector('.prmv');
+    if(rm) rm.addEventListener('click', ()=>{
+      state.coupon = null; saveState(); renderPromoAreas(); renderMoney();
+      toast('Coupon removed','The coupon was removed from your order.','tag');
+    });
+  });
+  icons();
+}
+
+/* ============ drawer / overlays ============ */
+const drawer = el('drawer'), qv = el('qv'), wheelM = el('wheelM'), co = el('co'), fb = el('fb'), setM = el('setM'), infoM = el('infoM');
+function syncLock(){
+  const any = [drawer, qv, wheelM, co, fb, setM, infoM].some(x => x.classList.contains('on'));
+  document.body.classList.toggle('locked', any);
+}
+function openDrawer(){ drawer.classList.add('on'); el('scrim').classList.add('on'); syncLock(); }
+function closeDrawer(){ drawer.classList.remove('on'); el('scrim').classList.remove('on'); syncLock(); }
+el('cartBtn').addEventListener('click', openDrawer);
+el('dClose').addEventListener('click', closeDrawer);
+el('scrim').addEventListener('click', closeDrawer);
+
+/* ============ quick view ============ */
+let qvId=null, qvQty=1;
+function openQV(id){
+  const p = byId(id); if(!p) return;
+  qvId = id; qvQty = 1;
+  const im = el('qvImg');
+  im.onerror = () => { im.onerror = null; im.src = imgFB(p); };
+  im.src = imgSrc(p);
+  im.alt = p.name;
+  const b = el('qvBadge');
+  if(p.badge){ b.textContent = p.badge; b.style.display = 'inline-block'; } else b.style.display = 'none';
+  el('qvName').textContent = p.name;
+  el('qvStars').innerHTML = starsFor(p);
+  el('qvProw').innerHTML = `<span class="price">${money(p.price)}</span><span class="was">${money(p.was)}</span><span class="off">−${Math.round((1-p.price/p.was)*100)}%</span>`;
+  if(p.price >= 25000){
+    el('qvAffirm').style.display = 'inline-flex';
+    el('qvAffirmTxt').innerHTML = `or <b>12 monthly payments of ${money(p.price/12)}</b> with PayPal Pay Monthly`;
+  } else if(p.price >= 50){
+    el('qvAffirm').style.display = 'inline-flex';
+    el('qvAffirmTxt').innerHTML = `or <b>4 interest-free payments of ${money(p.price/4)}</b> with PayPal Pay in 4`;
+  } else el('qvAffirm').style.display = 'none';
+  el('qvBlurb').textContent = p.blurb;
+  el('qvSpecs').innerHTML = p.specs.map(([k,v])=>`<div class="spec"><span>${k}</span><b>${v}</b></div>`).join('');
+  el('qvShipInfo').textContent = p.price >= 1000 ? 'Insured freight shipping · arrives in 5–10 business days' : 'Free shipping on orders over $35 · arrives in 3–7 business days';
+  el('qvQty').textContent = '1';
+  qv.classList.add('on'); syncLock(); icons();
+}
+function closeQV(){ qv.classList.remove('on'); syncLock(); }
+el('qvX').addEventListener('click', closeQV);
+qv.querySelector('.mscrim').addEventListener('click', closeQV);
+el('qvMinus').addEventListener('click', ()=>{ qvQty = Math.max(1, qvQty-1); el('qvQty').textContent = qvQty; });
+el('qvPlus').addEventListener('click', ()=>{ qvQty++; el('qvQty').textContent = qvQty; });
+el('qvAdd').addEventListener('click', ()=>{ addToCart(qvId, qvQty); closeQV(); });
+el('qvBuy').addEventListener('click', ()=>{ addToCart(qvId, qvQty); closeQV(); openCheckout(); });
+
+/* ============ checkout ============ */
+function setSteps(n){
+  [el('st1'), el('st2'), el('st3')].forEach((s,i)=>{
+    s.classList.remove('on','done');
+    if(i+1 < n) s.classList.add('done');
+    else if(i+1 === n) s.classList.add('on');
+  });
+  if(n > 3) [el('st1'), el('st2'), el('st3')].forEach(s=>s.classList.add('done'));
+}
+function showPanel(name){
+  ['ship','pay','done'].forEach(n => el('panel'+n[0].toUpperCase()+n.slice(1)).classList.toggle('on', n===name));
+}
+function renderSummary(){
+  const entries = Object.entries(state.cart).map(([id,q])=>[byId(id),q]).filter(([p])=>p);
+  el('sumItems').innerHTML = entries.map(([p,q])=>`
+    <div class="sitem">
+      ${imgTag(p,96)}
+      <span class="n">${p.name}</span>
+      <span class="p">×${q} · ${money(p.price*q)}</span>
+    </div>`).join('');
+  renderPromoAreas(); renderMoney(); icons();
+}
+function openCheckout(){
+  if(totals().n === 0){ toast('Your cart is empty','Add a product before checking out.','package'); return; }
+  closeDrawer();
+  co.classList.add('on'); co.classList.remove('done');
+  showPanel('ship'); setSteps(1);
+  renderSummary(); renderDelivery(); co.scrollTop = 0; syncLock();
+}
+function closeCheckout(){
+  co.classList.remove('on'); syncLock();
+  window.scrollTo(0,0);
+}
+el('coBtn').addEventListener('click', openCheckout);
+el('coX').addEventListener('click', ()=>{
+  const wasDone = el('panelDone').classList.contains('on');
+  closeCheckout();
+  if(!wasDone) toast('Checkout closed','Your cart has been saved.','clock');
+});
+
+/* delivery method options */
+function renderDelivery(){
+  const box = el('delOpts');
+  const stdPrice = totals().sub >= 35 ? '<span class="dp free">FREE</span>' : '<span class="dp">$4.99</span>';
+  if(hasBigItem()){
+    state.express = false;
+    box.innerHTML = `<label class="delopt on"><input type="radio" checked disabled/><div class="dt"><b>Insured freight delivery</b><span>5–10 business days · signature required on arrival</span></div><span class="dp free">FREE</span></label>`;
+    el('delNote').textContent = 'This order ships via insured freight due to its size.';
+  } else {
+    box.innerHTML = `
+      <label class="delopt ${state.express?'':'on'}"><input type="radio" name="del" value="std" ${state.express?'':'checked'}/><div class="dt"><b>Standard delivery</b><span>3–7 business days</span></div>${stdPrice}</label>
+      <label class="delopt ${state.express?'on':''}"><input type="radio" name="del" value="exp" ${state.express?'checked':''}/><div class="dt"><b>Express delivery</b><span>1–2 business days</span></div><span class="dp">$9.99</span></label>`;
+    box.querySelectorAll('input[name="del"]').forEach(r=>r.addEventListener('change',()=>{
+      state.express = r.value === 'exp';
+      renderDelivery(); renderMoney();
+    }));
+    el('delNote').textContent = 'Choose how fast you want your order.';
+  }
+}
+
+/* shipping form */
+function validateShipping(){
+  const checks = [
+    ['fName', v=>v.trim().length>1, 'Please enter your full name.'],
+    ['fEmail', v=>/.+@.+\..+/.test(v.trim()), 'Please enter a valid email address.'],
+    ['fAddr', v=>v.trim().length>4, 'Please enter your street address.'],
+    ['fCity', v=>v.trim().length>1, 'Please enter your city.'],
+    ['fZip', v=>v.trim().length>2, 'Please enter a valid ZIP / postal code.']
+  ];
+  let ok = true, first = null;
+  checks.forEach(([id, test, msg])=>{
+    const inp = el(id), f = inp.closest('.field'), good = test(inp.value);
+    f.classList.toggle('err', !good);
+    f.querySelector('.emsg').textContent = msg;
+    if(!good){ ok = false; first = first || inp; }
+  });
+  if(!ok){ first.focus(); return false; }
+  state.shipping = {
+    name: el('fName').value.trim(), email: el('fEmail').value.trim(),
+    addr: el('fAddr').value.trim(), city: el('fCity').value.trim(),
+    zip: el('fZip').value.trim(), country: el('fCountry').value
+  };
+  return true;
+}
+el('shipNext').addEventListener('click', ()=>{
+  if(!validateShipping()) return;
+  el('payShipTxt').textContent = `${state.shipping.name} · ${state.shipping.addr}, ${state.shipping.city} ${state.shipping.zip}`;
+  if(!el('cName').value) el('cName').value = state.shipping.name; /* prefill card name */
+  showPanel('pay'); setSteps(2); co.scrollTop = 0;
+});
+document.querySelectorAll('#shipForm input').forEach(i =>
+  i.addEventListener('input', ()=> i.closest('.field').classList.remove('err')));
+el('shipEdit').addEventListener('click', ()=>{ showPanel('ship'); setSteps(1); });
+
+/* ============ payment methods + card entry ============ */
+function setPayMethod(m){
+  state.payMethod = m;
+  el('pmA').classList.toggle('on', m==='paypal');
+  el('pmB').classList.toggle('on', m==='card');
+  el('cardBox').classList.toggle('on', m==='card');
+  renderPayCta();
+}
+el('pmA').addEventListener('click', ()=>setPayMethod('paypal'));
+el('pmB').addEventListener('click', ()=>setPayMethod('card'));
+
+function renderPayCta(){
+  const t = totals();
+  const cta = el('payCta');
+  if(state.payMethod==='card'){
+    cta.classList.add('cardmode');
+    cta.innerHTML = `<i data-lucide="lock"></i>Pay ${money(t.total)}`;
+  } else {
+    cta.classList.remove('cardmode');
+    cta.innerHTML = `<span class="ppmono"><i>P</i><i>P</i></span> Pay ${money(t.total)}`;
+  }
+  icons();
+}
+
+/* card helpers — any number is accepted; formatting + brand chip are cosmetic */
+function cardBrand(n){
+  n = String(n||'').replace(/\D/g,'');
+  if(/^4/.test(n)) return 'Visa';
+  if(/^(5[1-5]|2[2-7])/.test(n)) return 'Mastercard';
+  if(/^3[47]/.test(n)) return 'Amex';
+  if(/^6/.test(n)) return 'Discover';
+  return '';
+}
+el('cNum').addEventListener('input', e=>{
+  let v = e.target.value.replace(/\D/g,'');
+  const b = cardBrand(v);
+  v = v.slice(0, b==='Amex' ? 15 : 16);
+  const groups = b==='Amex' ? [4,6,5] : [4,4,4,4];
+  let out = '', i = 0;
+  for(const g of groups){ if(v.length <= i) break; out += v.slice(i, i+g) + ' '; i += g; }
+  e.target.value = out.trim();
+  const bd = el('cBrand');
+  bd.textContent = b;
+  bd.style.display = b ? 'flex' : 'none';
+});
+el('cExp').addEventListener('input', e=>{
+  let v = e.target.value.replace(/\D/g,'').slice(0,4);
+  if(v.length >= 3) v = v.slice(0,2) + '/' + v.slice(2);
+  e.target.value = v;
+});
+el('cCvc').addEventListener('input', e=>{
+  e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
+});
+
+/* ============ PayPal lightbox flow ============ */
+let fbBusy = false, pwShown = false, otpCtx = 'paypal';
+const fbViews = ['email','pass','auth','otp','hold','rev','proc','done','declined'];
+const cap = s => s[0].toUpperCase() + s.slice(1);
+function fbShow(n){
+  fbViews.forEach(v => el('fv'+cap(v)).classList.toggle('on', v===n));
+  if(n==='done') renderFBDone();
+  icons();
+}
+const maskedEmail = () => {
+  const e = state.fbEmail || 'you@example.com';
+  const p = e.split('@');
+  return (p[0][0] || '•') + '•••@' + (p[1] || '•••');
+};
+const maskedPhone = () => '+1 (•••) ••• 4821';
+function methodLabel(){
+  if(state.payMethod==='card' && state.card){
+    const d = String(state.card.num||'').replace(/\D/g,'');
+    return d ? state.card.brand + ' •••• ' + d.slice(-4) : 'Card';
+  }
+  return 'PayPal balance';
+}
+function updateFBFunding(){
+  el('fbFundTxt').textContent = methodLabel();
+}
+function prepRev(){
+  el('fbShipTo').textContent = `${state.shipping.name} · ${state.shipping.city}, ${state.shipping.zip}`;
+  updateFBFunding();
+  const notes = [];
+  if(needsOTP()) notes.push(`For your security, a 6-digit verification code will be sent to ${maskedEmail()} to authorize this payment.`);
+  if(needsHold()) notes.push(`Purchases this large require press-and-hold confirmation.`);
+  el('fbSecNote').style.display = notes.length ? 'flex' : 'none';
+  el('fbSecNoteTxt').textContent = notes.join(' ');
+}
+function openFB(mode){
+  fb.classList.add('on'); syncLock(); fbBusy = false;
+  state.ppMode = mode;
+  const payBtn = el('fbPay');
+  payBtn.disabled = false;
+  payBtn.innerHTML = `<span class="ppmono"><i>P</i><i>P</i></span> Pay ${money(totals().total)}`;
+  if(mode === 'card'){
+    /* guest card: skip login, straight to bank authentication */
+    el('authTxt').textContent = 'Authenticating your card with the issuing bank…';
+    fbShow('auth');
+    setTimeout(nextAfterAuth, 1300);
+  } else {
+    if(state.fbEmail){
+      prepRev(); fbShow('rev');
+    } else {
+      el('fbEmailIn').value = state.shipping ? state.shipping.email : '';
+      el('fbEmailErr').classList.remove('show');
+      fbShow('email');
+    }
+  }
+}
+function nextAfterAuth(){
+  if(needsOTP()) startOtp('bank');
+  else if(needsHold()) showHold();
+  else beginProcessing();
+}
+function closeFB(){ fb.classList.remove('on'); syncLock(); }
+
+/* main pay CTA on the checkout payment panel — any card input is accepted */
+el('payCta').addEventListener('click', ()=>{
+  if(state.payMethod === 'card'){
+    state.card = {
+      num: el('cNum').value,
+      exp: el('cExp').value,
+      cvc: el('cCvc').value,
+      name: el('cName').value.trim(),
+      brand: cardBrand(el('cNum').value) || 'Card'
+    };
+    openFB('card');
+  } else {
+    openFB('paypal');
+  }
+});
+
+/* email step */
+el('fvEmail').addEventListener('submit', e=>{
+  e.preventDefault();
+  const v = el('fbEmailIn').value.trim();
+  if(!/.+@.+\..+/.test(v)){ el('fbEmailErr').classList.add('show'); return; }
+  el('fbEmailErr').classList.remove('show');
+  state.fbEmail = v;
+  el('fbEmailTxt').textContent = v;
+  el('fbPassIn').value = ''; pwShown = false;
+  el('fbPassIn').type = 'password';
+  el('fbEye').innerHTML = '<i data-lucide="eye"></i>';
+  el('fbPassErr').classList.remove('show');
+  fbShow('pass');
+  setTimeout(()=> el('fbPassIn').focus(), 60);
+});
+el('fbSignup').addEventListener('click', ()=> toast('Sign up','Creating a new account isn&rsquo;t part of this simulation.','info'));
+el('fbTrouble1').addEventListener('click', ()=> toast('Account recovery','Account recovery isn&rsquo;t part of this simulation.','info'));
+el('fbTrouble2').addEventListener('click', ()=> toast('Account recovery','Account recovery isn&rsquo;t part of this simulation.','info'));
+el('fbChange').addEventListener('click', ()=> fbShow('email'));
+
+/* password step */
+el('fvPass').addEventListener('submit', e=>{
+  e.preventDefault();
+  if(!el('fbPassIn').value){ el('fbPassErr').classList.add('show'); return; }
+  el('fbPassErr').classList.remove('show');
+  el('authTxt').textContent = 'Logging you in…';
+  fbShow('auth');
+  setTimeout(()=>{ prepRev(); fbShow('rev'); }, 850);
+});
+el('fbEye').addEventListener('click', ()=>{
+  pwShown = !pwShown;
+  el('fbPassIn').type = pwShown ? 'text' : 'password';
+  el('fbEye').innerHTML = `<i data-lucide="${pwShown?'eye-off':'eye'}"></i>`;
+  icons();
+});
+
+/* review step */
+el('fbFund').addEventListener('click', ()=> toast('Payment methods','Choose PayPal or a card on the Shoppi payment page.','info'));
+el('fbCancel').addEventListener('click', ()=>{ closeFB(); toast('Payment cancelled','You have been returned to Shoppi.','x'); });
+el('fbLogout').addEventListener('click', ()=>{ state.fbEmail = null; fbShow('email'); });
+el('fbPay').addEventListener('click', ()=>{
+  if(fbBusy) return;
+  if(needsOTP()) startOtp('paypal');
+  else if(needsHold()) showHold();
+  else beginProcessing();
+});
+
+/* ---- verification code: accepts anything, no notification ---- */
+const boxes = [...document.querySelectorAll('.otpin')];
+function clearBoxes(){ boxes.forEach(b => b.value = ''); }
+function startOtp(ctx){
+  otpCtx = ctx;
+  clearBoxes();
+  el('otpErr').classList.remove('show');
+  el('otpVerify').disabled = false;
+  boxes.forEach(b => b.disabled = false);
+  if(ctx === 'bank'){
+    el('otpTitle').textContent = 'Verify your card';
+    el('otpSub').innerHTML = `Your bank sent a 6-digit code to <b>${maskedPhone()}</b> to authorize this payment.`;
+  } else {
+    el('otpTitle').textContent = 'Verify it\u2019s you';
+    el('otpSub').innerHTML = `For extra security, PayPal sent a 6-digit code to <b>${maskedEmail()}</b>.`;
+  }
+  fbShow('otp');
+  setTimeout(()=> boxes[0].focus(), 90);
+}
+function verifyOtp(){
+  const v = boxes.map(b => b.value).join('');
+  if(v.length < 6){ el('otpErr').classList.add('show'); return; }
+  el('otpErr').classList.remove('show');
+  if(needsHold()) showHold();
+  else beginProcessing();
+}
+el('otpVerify').addEventListener('click', verifyOtp);
+el('otpResend').addEventListener('click', ()=>{
+  startOtp(otpCtx);
+  toast('New code sent', `A new 6-digit code was sent to ${otpCtx==='bank' ? maskedPhone() : maskedEmail()}.`, 'mail');
+});
+boxes.forEach((b,i)=>{
+  b.addEventListener('input', ()=>{
+    b.value = b.value.replace(/\D/g,'').slice(0,1);
+    if(b.value && i < 5) boxes[i+1].focus();
+    if(boxes.every(x => x.value)) setTimeout(verifyOtp, 220);
+  });
+  b.addEventListener('keydown', e=>{
+    if(e.key==='Backspace' && !b.value && i > 0){ e.preventDefault(); boxes[i-1].focus(); }
+  });
+  b.addEventListener('paste', e=>{
+    e.preventDefault();
+    const d = (e.clipboardData.getData('text') || '').replace(/\D/g,'').slice(0,6);
+    d.split('').forEach((c,k)=>{ if(boxes[k]) boxes[k].value = c; });
+    if(d.length === 6) setTimeout(verifyOtp, 220);
+    else boxes[Math.min(d.length,5)].focus();
+  });
+});
+
+/* ---- hold to confirm (very large purchases) ---- */
+let holdRaf = null, holdStart = 0;
+const HOLD_MS = 1800;
+function showHold(){
+  el('holdAmtTxt').textContent = money(totals().total);
+  el('holdBtn').classList.remove('ok');
+  el('holdBtn').querySelector('.holdlbl span').textContent = 'Press & hold to pay';
+  fbShow('hold');
+}
+function startHold(e){
+  e.preventDefault();
+  if(el('holdBtn').classList.contains('ok')) return;
+  holdStart = performance.now();
+  const step = t => {
+    const p = Math.min(1, (t - holdStart) / HOLD_MS);
+    el('holdFill').style.width = (p*100) + '%';
+    if(p >= 1){
+      el('holdBtn').classList.add('ok');
+      el('holdBtn').querySelector('.holdlbl span').textContent = 'Payment authorized';
+      setTimeout(()=>{ el('holdFill').style.width = '0%'; beginProcessing(); }, 650);
+      holdRaf = null;
+      return;
+    }
+    holdRaf = requestAnimationFrame(step);
+  };
+  holdRaf = requestAnimationFrame(step);
+}
+function cancelHold(){
+  if(holdRaf){ cancelAnimationFrame(holdRaf); holdRaf = null; }
+  if(!el('holdBtn').classList.contains('ok')) el('holdFill').style.width = '0%';
+}
+el('holdBtn').addEventListener('pointerdown', startHold);
+['pointerup','pointerleave','pointercancel'].forEach(ev => el('holdBtn').addEventListener(ev, cancelHold));
+el('holdCancel').addEventListener('click', ()=>{ cancelHold(); closeFB(); toast('Payment cancelled','You have been returned to Shoppi.','x'); });
+
+/* ---- processing → done / declined (reasons never revealed) ---- */
+function beginProcessing(){
+  fbBusy = true;
+  const btn = el('fbPay');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Paying…';
+  fbShow('proc');
+  setTimeout(()=>{
+    fbBusy = false;
+    if(overLimit()){
+      renderDeclined();
+      fbShow('declined');
+    } else {
+      renderFBDone();
+      fbShow('done');
+      setTimeout(()=>{ closeFB(); orderComplete(); }, 1300);
+    }
+  }, 1700);
+}
+function renderFBDone(){
+  el('fvDone').innerHTML = `
+    <div class="fbproc">
+      <svg class="ck navy" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path d="M15 27l7.5 7.5L37 19" fill="none"/></svg>
+      <h3 class="fbh2" style="margin:0">You&rsquo;re all set</h3>
+      <p class="fbsub">You paid Shoppi <b>${money(totals().total)}</b> with ${methodLabel()}.<br>Redirecting you back to Shoppi…</p>
+    </div>`;
+}
+
+/* ---- declined: generic, no reason shown ---- */
+let declCd = null;
+function renderDeclined(){
+  const t = totals();
+  const isCard = state.payMethod === 'card';
+  el('declAmt').textContent = money(t.total);
+  el('declHead').textContent = isCard ? 'Your card was declined' : 'This payment couldn\u2019t be completed';
+  el('declSub').innerHTML = isCard
+    ? `We&rsquo;re sorry — your payment of <b>${money(t.total)}</b> to Shoppi was declined. No money has left your account.`
+    : `We&rsquo;re sorry — we couldn&rsquo;t process your payment of <b>${money(t.total)}</b> right now. Please try again or choose another way to pay.`;
+  el('declMethod').textContent = methodLabel();
+  const btn = el('declRetry');
+  btn.disabled = true;
+  let left = 5;
+  btn.textContent = 'Try again in 5s';
+  clearInterval(declCd);
+  declCd = setInterval(()=>{
+    left--;
+    if(left <= 0){ clearInterval(declCd); btn.disabled = false; btn.textContent = 'Try again'; }
+    else btn.textContent = `Try again in ${left}s`;
+  }, 1000);
+}
+el('declRetry').addEventListener('click', ()=>{
+  if(el('declRetry').disabled) return;
+  beginProcessing();
+});
+el('declOther').addEventListener('click', ()=>{
+  closeFB();
+  showPanel('pay'); setSteps(2);
+});
+el('declCancel').addEventListener('click', ()=>{
+  closeFB();
+  toast('Payment declined', 'The order was not completed. Your cart has been saved.', 'x');
+});
+
+/* ============ order complete ============ */
+function orderComplete(){
+  const t = totals();
+  const items = Object.entries(state.cart).map(([id,q])=>[byId(id),q]).filter(([p])=>p);
+  const orderNo = 'SH-' + rnd(100000, 999999);
+  const d1 = new Date(Date.now() + rnd(3,5)*864e5);
+  const d2 = new Date(d1.getTime() + 2*864e5);
+  const payLabel = methodLabel();
+  const delLabel = hasBigItem() ? 'Insured freight · 5–10 business days'
+    : (state.express ? 'Express · 1–2 business days' : 'Standard · 3–7 business days');
+  setSteps(4); showPanel('done'); co.classList.add('done');
+  el('panelDone').innerHTML = `
+    <div class="done-wrap">
+      <svg class="ck" style="width:92px;height:92px" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path d="M15 27l7.5 7.5L37 19" fill="none"/></svg>
+      <h2>Thank you for your order!</h2>
+      <p class="done-sub">Your order has been placed and a confirmation email is on its way.</p>
+      <button class="orderchip" id="orderChip" type="button"><i data-lucide="receipt"></i><span id="orderNo">${orderNo}</span><i data-lucide="copy"></i></button>
+      <div class="dcard">
+        <div class="oitems">
+          ${items.map(([p,q])=>`<div class="oitem"><span>${p.name} × ${q}</span><b>${money(p.price*q)}</b></div>`).join('')}
+        </div>
+        <div class="drow"><span>Items</span><b>${t.n}</b></div>
+        <div class="drow"><span>Order total</span><b>${money(t.total)}</b></div>
+        <div class="drow"><span>Payment method</span><b>${payLabel}</b></div>
+        <div class="drow"><span>Delivery</span><b>${delLabel}</b></div>
+        <div class="drow"><span>Estimated delivery</span><b>${fmtDate(d1)} – ${fmtDate(d2)}</b></div>
+        <div class="drow"><span>Tracking number</span><b>TRK-${rnd(10000000, 99999999)}</b></div>
+      </div>
+      <p class="done-mail">A confirmation email has been sent to <b id="doneEmail"></b></p>
+      <div class="done-btns"><button class="cobtn" id="keepBtn" type="button">Continue shopping</button></div>
+    </div>`;
+  el('doneEmail').textContent = state.shipping.email;
+  icons();
+  el('orderChip').addEventListener('click', ()=> copyText(orderNo, 'Order number copied.'));
+  el('keepBtn').addEventListener('click', closeCheckout);
+  state.cart = {}; state.coupon = null; state.express = false; saveState(); renderCart();
+  confettiBurst();
+  toast('Order placed', `Order ${orderNo} confirmed. Thank you for shopping with Shoppi!`, 'party-popper');
+  co.scrollTop = 0;
+}
+
+/* ============ confetti ============ */
+function confettiBurst(){
+  const cv = el('confettiC'), ctx = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const colors = ['#ff4d0a','#e5231b','#ffc43a','#0070ba','#241309','#3f9d42'];
+  const P = [];
+  const cannon = (x,y,dir)=>{
+    for(let k=0;k<85;k++){
+      const a = dir + (Math.random()-.5)*0.9, sp = 9 + Math.random()*7;
+      P.push({x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp-3,
+        w:5+Math.random()*6, h:8+Math.random()*8, rot:Math.random()*Math.PI,
+        vr:(Math.random()-.5)*.3, c:colors[k%colors.length], shape:Math.random()<.35?'c':'r'});
+    }
+  };
+  cannon(cv.width*0.15, cv.height+10, -1.05);
+  cannon(cv.width*0.85, cv.height+10, -2.09);
+  let frames = 0;
+  (function loop(){
+    frames++;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    let alive = false;
+    P.forEach(p=>{
+      p.vy += 0.22; p.vx *= 0.992; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      if(p.y > cv.height+30) return;
+      alive = true;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle = p.c;
+      if(p.shape==='c'){ ctx.beginPath(); ctx.arc(0,0,p.w/2,0,7); ctx.fill(); }
+      else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    if(alive && frames < 260) requestAnimationFrame(loop);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* ============ settings modal ============ */
+function syncSetUI(){
+  el('swLimit').checked = settings.limitOn;
+  el('limitAmt').value = settings.limitAmt;
+  el('amtLimit').classList.toggle('on', settings.limitOn);
+  el('swAuth').checked = settings.authOn;
+  el('authAmt').value = settings.authAmt;
+  el('amtAuth').classList.toggle('on', settings.authOn);
+  el('swHold').checked = settings.holdOn;
+  el('holdSetAmt').value = settings.holdAmt;
+  el('amtHold').classList.toggle('on', settings.holdOn);
+  el('viaEmail').checked = settings.via==='email';
+  el('viaSms').checked = settings.via==='sms';
+}
+function clampAmt(v, d){
+  const n = Math.round(parseFloat(v));
+  if(!n || n < 1) return d;
+  return n;
+}
+function readSet(){
+  settings.limitOn = el('swLimit').checked;
+  settings.limitAmt = clampAmt(el('limitAmt').value, 2500);
+  settings.authOn = el('swAuth').checked;
+  settings.authAmt = clampAmt(el('authAmt').value, 500);
+  settings.holdOn = el('swHold').checked;
+  settings.holdAmt = clampAmt(el('holdSetAmt').value, 50000);
+  settings.via = el('viaSms').checked ? 'sms' : 'email';
+  saveSettings(); syncSetUI();
+}
+function openSettings(){ syncSetUI(); setM.classList.add('on'); syncLock(); }
+function closeSettings(){ setM.classList.remove('on'); syncLock(); }
+el('setBtn').addEventListener('click', openSettings);
+el('footSetBtn').addEventListener('click', openSettings);
+el('setX').addEventListener('click', closeSettings);
+el('setScrim').addEventListener('click', closeSettings);
+el('setDone').addEventListener('click', ()=>{ readSet(); closeSettings(); toast('Settings saved','Your preferences have been updated.','settings'); });
+el('swLimit').addEventListener('change', e=>{
+  readSet();
+  toast(e.target.checked ? 'Purchase limit enabled' : 'Purchase limit disabled',
+        e.target.checked ? 'Orders over this amount will be declined at payment — the buyer sees a declined card with no reason.' : 'All payment amounts are now allowed.', 'settings');
+});
+el('limitAmt').addEventListener('change', ()=>{
+  readSet();
+  if(settings.limitOn) toast('Purchase limit updated', 'Orders over this amount will be declined at payment.', 'settings');
+});
+el('swAuth').addEventListener('change', e=>{
+  readSet();
+  toast(e.target.checked ? 'Verification enabled' : 'Verification disabled',
+        e.target.checked ? `A 6-digit code will be required for purchases over ${money(settings.authAmt)}.` : 'Verification codes are no longer required.', 'shield-check');
+});
+el('authAmt').addEventListener('change', ()=>{
+  readSet();
+  if(settings.authOn) toast('Threshold updated', `Verification is required over ${money(settings.authAmt)}.`, 'shield-check');
+});
+el('swHold').addEventListener('change', e=>{
+  readSet();
+  toast(e.target.checked ? 'Hold-to-confirm enabled' : 'Hold-to-confirm disabled',
+        e.target.checked ? `Purchases over ${money(settings.holdAmt)} must be press-and-hold confirmed.` : 'Press-and-hold confirmation is no longer required.', 'lock');
+});
+el('holdSetAmt').addEventListener('change', ()=>{
+  readSet();
+  if(settings.holdOn) toast('Threshold updated', `Hold-to-confirm is required over ${money(settings.holdAmt)}.`, 'lock');
+});
+document.querySelectorAll('input[name="via"]').forEach(r => r.addEventListener('change', ()=>{
+  readSet();
+  toast('Delivery method updated', `Verification codes will be sent via ${settings.via === 'sms' ? 'SMS' : 'email'}.`, 'smartphone');
+}));
+el('resetData').addEventListener('click', ()=>{
+  state.cart = {}; state.coupon = null; state.wheelCoupon = null;
+  state.favs = new Set(); state.spinUsed = false;
+  saveState(); renderCart(); renderGrid();
+  el('fabDot').style.display = 'grid';
+  toast('Demo data cleared', 'Cart, wishlist, coupons, and spin status were reset.', 'rotate-ccw');
+});
+el('resetSet').addEventListener('click', ()=>{
+  settings = { ...DEFAULTS };
+  saveSettings(); syncSetUI();
+  toast('Settings restored', 'Default settings have been restored.', 'settings');
+});
+
+/* ============ info modal (ⓘ button) ============ */
+function openInfo(){ infoM.classList.add('on'); syncLock(); }
+function closeInfo(){ infoM.classList.remove('on'); syncLock(); }
+el('infoBtn').addEventListener('click', openInfo);
+el('footInfoBtn').addEventListener('click', openInfo);
+el('infoX').addEventListener('click', closeInfo);
+el('infoScrim').addEventListener('click', closeInfo);
+el('infoDone').addEventListener('click', closeInfo);
+
+/* ============ countdown ============ */
+let cdEnd = Date.now() + (2*3600 + 47*60 + 33)*1000;
+function tick(){
+  let s = Math.max(0, Math.floor((cdEnd - Date.now())/1000));
+  if(s === 0){
+    cdEnd = Date.now() + 2*3600*1000;
+    toast('Flash sale extended','More time has been added to the flash sale.','clock');
+    s = 7200;
+  }
+  el('cdH').textContent = pad(Math.floor(s/3600));
+  el('cdM').textContent = pad(Math.floor(s%3600/60));
+  el('cdS').textContent = pad(s%60);
+}
+setInterval(tick, 1000); tick();
+el('ticket').addEventListener('click', ()=> copyText('SAVE5', 'Coupon code SAVE5 copied.'));
+
+/* ============ spin wheel ============ */
+const SEGS = [
+  {l:'5% OFF',   bg:'#ff4d0a', fg:'#ffffff', type:'percent', v:5},
+  {l:'$2 OFF',   bg:'#ffc43a', fg:'#5a3d00', type:'fixed',   v:2},
+  {l:'10% OFF',  bg:'#e5231b', fg:'#ffffff', type:'percent', v:10},
+  {l:'FREE SHIP',bg:'#241309', fg:'#ffd9c4', type:'ship',    v:0},
+  {l:'15% OFF',  bg:'#ff4d0a', fg:'#ffffff', type:'percent', v:15},
+  {l:'$1 OFF',   bg:'#ffc43a', fg:'#5a3d00', type:'fixed',   v:1},
+  {l:'5% OFF',   bg:'#e5231b', fg:'#ffffff', type:'percent', v:5},
+  {l:'$5 OFF',   bg:'#241309', fg:'#ffd9c4', type:'fixed',   v:5},
+];
+let wheelRot = 0, spinning = false;
+function drawWheel(){
+  const c = el('wheelC'), dpr = window.devicePixelRatio || 1, S = 300;
+  c.width = S*dpr; c.height = S*dpr;
+  const x = c.getContext('2d'); x.scale(dpr,dpr);
+  const cx = S/2, cy = S/2, R = S/2 - 4;
+  SEGS.forEach((s,i)=>{
+    const a0 = (-90 + i*45 - 22.5) * Math.PI/180;
+    const a1 = a0 + 45 * Math.PI/180;
+    x.beginPath(); x.moveTo(cx,cy); x.arc(cx,cy,R,a0,a1); x.closePath();
+    x.fillStyle = s.bg; x.fill();
+    x.strokeStyle = '#fff'; x.lineWidth = 3; x.stroke();
+    x.save(); x.translate(cx,cy); x.rotate(a0 + 22.5*Math.PI/180);
+    x.textAlign = 'right'; x.textBaseline = 'middle';
+    x.fillStyle = s.fg; x.font = '800 14px "Nunito Sans",sans-serif';
+    x.fillText(s.l, R-16, 0); x.restore();
+  });
+  x.beginPath(); x.arc(cx,cy,34,0,7); x.fillStyle = '#fff'; x.fill();
+  x.strokeStyle = '#f0e2d4'; x.lineWidth = 2; x.stroke();
+  x.fillStyle = '#ff4d0a'; x.font = '800 20px "Baloo 2",sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('SP', cx, cy+1);
+}
+function openWheel(){
+  wheelM.classList.add('on'); syncLock(); drawWheel();
+  el('fabDot').style.display = state.spinUsed ? 'none' : 'grid';
+  if(state.spinUsed){
+    const b = el('wSpin'); b.disabled = true; b.textContent = 'PRIZE CLAIMED';
+    if(state.wheelCoupon) showWheelRes(state.wheelCoupon, false);
+  } else {
+    const b = el('wSpin'); b.disabled = false; b.textContent = 'SPIN THE WHEEL';
+    el('wRes').classList.remove('on');
+  }
+}
+function closeWheel(){ wheelM.classList.remove('on'); syncLock(); }
+el('fab').addEventListener('click', openWheel);
+el('hdrSpin').addEventListener('click', openWheel);
+el('wheelX').addEventListener('click', closeWheel);
+wheelM.querySelector('.mscrim').addEventListener('click', closeWheel);
+
+function showWheelRes(prize, fresh){
+  el('wRes').classList.add('on');
+  el('wResT').textContent = `You won ${prize.disp}!`;
+  el('wResCode').querySelector('span').textContent = prize.code;
+  el('wNote').textContent = fresh
+    ? 'Your coupon has been applied automatically. One coupon can be used per order.'
+    : (state.coupon && state.coupon.code === prize.code
+        ? 'This coupon is applied to your cart.'
+        : 'Apply this code at checkout to redeem your discount.');
+  icons();
+}
+el('wResCode').addEventListener('click', ()=> copyText(state.wheelCoupon ? state.wheelCoupon.code : ''));
+el('wResShop').addEventListener('click', ()=>{
+  closeWheel();
+  window.scrollTo({top: el('grid').offsetTop - 150, behavior:'smooth'});
+});
+el('wSpin').addEventListener('click', ()=>{
+  if(spinning || state.spinUsed) return;
+  spinning = true;
+  const b = el('wSpin'); b.disabled = true; b.textContent = 'SPINNING…';
+  const i = Math.floor(Math.random()*SEGS.length);
+  const jitter = Math.random()*24 - 12;
+  const targetMod = ((360 - i*45 + jitter) % 360 + 360) % 360;
+  const cur = ((wheelRot % 360) + 360) % 360;
+  let delta = ((targetMod - cur) % 360 + 360) % 360;
+  delta += 360*5;
+  wheelRot += delta;
+  const c = el('wheelC');
+  c.style.transition = 'transform 4.4s cubic-bezier(.12,.84,.16,1)';
+  c.style.transform = `rotate(${wheelRot}deg)`;
+  setTimeout(()=>{ spinning = false; settle(i); }, 4550);
+});
+function settle(i){
+  const s = SEGS[i];
+  const disp = s.type==='ship' ? 'FREE SHIPPING' : s.l;
+  const code = 'SPIN-' + Array.from({length:4}, ()=> 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'[rnd(0,30)]).join('');
+  const c = {code, type:s.type, v:s.v};
+  state.wheelCoupon = {...c, disp};
+  state.coupon = c;
+  state.spinUsed = true;
+  saveState();
+  el('wSpin').textContent = 'PRIZE CLAIMED';
+  el('fabDot').style.display = 'none';
+  showWheelRes(state.wheelCoupon, true);
+  renderCart();
+  toast(`You won ${disp}!`, `Code ${code} has been applied to your cart.`, 'gift');
+}
+setTimeout(()=>{
+  if(sess.get('spSeen')) return;
+  sess.set('spSeen','1');
+  if(!co.classList.contains('on') && !qv.classList.contains('on') && !fb.classList.contains('on')) openWheel();
+}, 2600);
+
+/* ============ misc ============ */
+document.addEventListener('keydown', e=>{
+  if(e.key !== 'Escape') return;
+  if(infoM.classList.contains('on')){ closeInfo(); return; }
+  if(setM.classList.contains('on')){ closeSettings(); return; }
+  if(fb.classList.contains('on')){ if(!fbBusy) closeFB(); return; }
+  if(qv.classList.contains('on')){ closeQV(); return; }
+  if(wheelM.classList.contains('on')){ closeWheel(); return; }
+  if(drawer.classList.contains('on')) closeDrawer();
+});
+window.addEventListener('scroll', ()=> el('hdr').classList.toggle('scrolled', window.scrollY > 8));
+
+/* duplicate ticker content for seamless loop */
+const tk = el('ticker');
+tk.appendChild(tk.querySelector('.tk-set').cloneNode(true));
+
+/* ============ init ============ */
+loadState();
+loadSettings();
+el('searchIn').placeholder = `Search ${PRODUCTS.length} products…`;
+el('fabDot').style.display = state.spinUsed ? 'none' : 'grid';
+renderGrid();
+renderCart();
+renderPayCta();
+icons();
+</script>
+</body>
+</html>
